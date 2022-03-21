@@ -1,0 +1,6 @@
+{
+    "python.pythonPath": "C:\\Users\\Administrator\\anaconda3\\python.exe",
+    "python.linting.pycodestyleEnabled": true,
+    "python.formatting.provider": "black",
+    "python.languageServer": "Jedi"
+}
