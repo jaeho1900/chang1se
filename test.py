@@ -1,1 +1,1 @@
-print("next")
+PRINT('220322 NEWS')

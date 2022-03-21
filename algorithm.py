@@ -398,15 +398,21 @@ print(x, y)
 # 시퀀스자료형: 리스트, 튜플, 문자열, 바이트형 등 배열관련 자료형
 # 애니자료형: 제약이 없는 자료형
 # 스캔: 배열 원소를 하나씩 살펴보는 것에 대한 알고리즘 용어
+
+# [Do it! 실습 2-2] 시퀀스 원소의 최댓값 출력하기
 from typing import Any, Sequence
+
 
 def max_of(a: Sequence) -> Any:
     maximum = a[0]
     for i in range(1, len(a)):
-         if a[i] > maximum:
+        if a[i] > maximum:
             maximum = a[i]
     return maximum
 
+
+# 모듈이 직접 수행될 때 '변수__name__' 은 '__main__'이다
+# 모듈이 임포트될 때 '변수__name__' 은 원래의 '모듈명'이다
 if __name__ == '__main__':
     print('배열의 최댓값을 구합니다.')
     num = int(input('원소 수를 입력하세요 : '))
@@ -416,6 +422,26 @@ if __name__ == '__main__':
         x[i] = int(input(f'x[{i}]를 입력하세요.: '))
 
     print(f'최댓값은 {max_of(x)}입니다.')
+
+# [Do it! 실습 2-3] 배열 원소의 최댓값을 구해서 출력하기(원솟값을 입력받음)
+from max import max_of
+
+print('배열의 최댓값을 구합니다.')
+print('주의: "End"를 입력하면 종료합니다.')
+
+number = 0
+x = []                  # 빈 리스트
+
+while True:
+    s = input(f'x[{number}]를 입력하세요.: ')
+    if s == 'End':
+        break
+    x.append(int(s))    # 배열의 끝에 추가
+    number += 1
+
+print(f'{number}개를 입력했습니다.')
+print(f'최댓값은 {max_of(x)}입니다.')
+
 
 
 

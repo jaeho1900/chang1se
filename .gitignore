@@ -1,5 +1,7 @@
 ## 폴더 무시
+__pycache__/
 _common/
 apiscraper-master/
 data/
+done/
 wikiSpider/
