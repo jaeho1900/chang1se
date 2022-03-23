@@ -397,9 +397,8 @@ print(x, y)
 # 시퀀스형 자료를 받아서 애니형 자료를 반환
 # 시퀀스자료형: 리스트, 튜플, 문자열, 바이트형 등 배열관련 자료형
 # 애니자료형: 제약이 없는 자료형
-# 스캔: 배열 원소를 하나씩 살펴보는 것에 대한 알고리즘 용어
 
-# [Do it! 실습 2-2] 시퀀스 원소의 최댓값 출력하기
+# [Do it! 실습 2-2] 시퀀스 원소의 최댓값 출력하기(max.py)
 from typing import Any, Sequence
 
 
@@ -424,7 +423,7 @@ if __name__ == '__main__':
     print(f'최댓값은 {max_of(x)}입니다.')
 
 # [Do it! 실습 2-3] 배열 원소의 최댓값을 구해서 출력하기(원솟값을 입력받음)
-from max import max_of
+from max import max_of  # max.py 파일의 max_of 함수 호출
 
 print('배열의 최댓값을 구합니다.')
 print('주의: "End"를 입력하면 종료합니다.')
@@ -442,7 +441,24 @@ while True:
 print(f'{number}개를 입력했습니다.')
 print(f'최댓값은 {max_of(x)}입니다.')
 
+# 배열 원소를 하나씩 살펴보기(스캔) 위한 방법 4가지
+x = ['Jone', 'George', 'Paul', 'Ringo']
 
+# len()함수로 원소 수를 알아내어 반복
+for i in range(len(x)):
+    print(f'x[{i}] = {x[i]}')
+
+# enumerate()함수로 인덱스로 반복: 인덱스와 원소를 짝지어 튜플로 꺼냄
+for i, name in enumerate(x):
+    print(f'x[{i}] = {name}')
+
+# enumerate()함수로 인덱스로 반복(1부터 카운트)
+for i, name in enumerate(x, 1):
+    print(f'x[{i}] = {name}')
+
+# in을 사용하여 처음부터 순서대로 반복(인덱스 미사용)
+for i in x:
+    print(i)
 
 
 # -----------------------------------------
