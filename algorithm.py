@@ -460,6 +460,31 @@ for i, name in enumerate(x, 1):
 for i in x:
     print(i)
 
+# 배열 원소를 역순으로 정렬
+from typing import Any, MutableSequence
+
+def reverse_array(a:MutableSequence) -> None:
+    n = len(a)
+    for i in range(n//2):
+        a[i], a[n-i-1] = a[n-i-1], a[i]
+
+if __name__ == '__main__':
+    print('배열 원소를 역순으로 정렬합니다.')
+    nx = int(input('원소 수를 입력하세요.: '))
+    x = [None] * nx   # 원소 수가 nx인 리스트를 생성
+
+    for i in range(nx):
+        x[i] = int(input(f'x[{i}] : '))
+
+    reverse_array(x)  # x를 역순으로 정렬
+
+    print('배열 원소를 역순으로 정렬했습니다.')
+    for i in range(nx):
+        print(f'x[{i}] = {x[i]}')
+
+# 리스트를 역순으로 정렬
+x.reverse() # 리스트가 자기자신을 역순으로 정렬하는 리스트형 함수 reverse()
+y = list(reversed(x)) # x의 원소를 역순으로 꺼내서 새로운 리스트에 담는다
 
 # -----------------------------------------
 # 3장. 검색 알고리즘
