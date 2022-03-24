@@ -463,10 +463,12 @@ for i in x:
 # 배열 원소를 역순으로 정렬
 from typing import Any, MutableSequence
 
-def reverse_array(a:MutableSequence) -> None:
+
+def reverse_array(a: MutableSequence) -> None:
     n = len(a)
     for i in range(n//2):
         a[i], a[n-i-1] = a[n-i-1], a[i]
+
 
 if __name__ == '__main__':
     print('배열 원소를 역순으로 정렬합니다.')
@@ -483,8 +485,8 @@ if __name__ == '__main__':
         print(f'x[{i}] = {x[i]}')
 
 # 리스트를 역순으로 정렬
-x.reverse() # 리스트가 자기자신을 역순으로 정렬하는 리스트형 함수 reverse()
-y = list(reversed(x)) # x의 원소를 역순으로 꺼내서 새로운 리스트에 담는다
+x.reverse()            # 리스트가 자기자신을 역순으로 정렬하는 리스트형 함수 reverse()
+y = list(reversed(x))  # x의 원소를 역순으로 꺼내서 새로운 리스트에 담는다
 
 # -----------------------------------------
 # 3장. 검색 알고리즘
