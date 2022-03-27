@@ -1,23 +1,36 @@
-from typing import Any, MutableSequence
+def card_conv(x: int, r: int) -> str:
+    """정수 x를 r 진수로 변환한 뒤 그 수를 나타내는 문자열을 반환"""
+    d = ''  # 변환 뒤 문자열
+    dchar = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    n = len(str(x))
 
-
-def reverse_array(a: MutableSequence) -> None:
-    """뮤터블 시퀀스형 a의 원소를 역순으로 정렬"""
-    n = len(a)
-    for i in range(n // 2):
-        a[i], a[n - i - 1] = a[n - i - 1], a[i]
-
+    print(f'{r:2} | {x:>{n}d}')
+    while x > 0:
+        print('   +' + (n+2) * '-')
+        if x//r:
+            print(f'{r:2} | {x // r:>{n}d} ... {x % r}')
+        else:
+            print(f'     {x // r:>{n}d} ... {x % r}')
+        d += dchar[x % r]  # 해당하는 문자를 꺼내 결합
+        x //= r
+    return d[::-1]         # 역순으로 반환
 
 if __name__ == '__main__':
-    print('배열 원소를 역순으로 정렬합니다.')
-    nx = int(input('원소 수를 입력하세요.: '))
-    x = [None] * nx   # 원소 수가 nx인 리스트를 생성
+    print('10진수를 n진수로 변환합니다.')
 
-    for i in range(nx):
-        x[i] = int(input(f'x[{i}] : '))
+    while True:
+        while True :  # 음이 아닌 정수를 입력받음
+            no = int(input('변환할 값으로 음이 아닌 정수를 입력하세요.: '))
+            if no > 0:
+                break
 
-    reverse_array(x)  # x를 역순으로 정렬
+        while True :  # 2~36진수의 정수값을 입력받음
+            cd = int(input('어떤 진수로 변환할까요?: '))
+            if 2 <=  cd <=  36:
+                break
 
-    print('배열 원소를 역순으로 정렬했습니다.')
-    for i in range(nx):
-        print(f'x[{i}] = {x[i]}')
+        print(f'{cd}진수로는 {card_conv(no, cd)}입니다.')
+
+        retry = input( "한 번 더 변환할까요?(Y ... 예/N ... 아니오): ")
+        if retry in {'N', 'n'}:
+           break
