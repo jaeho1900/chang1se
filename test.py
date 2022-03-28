@@ -1,36 +1,40 @@
-def card_conv(x: int, r: int) -> str:
-    """정수 x를 r 진수로 변환한 뒤 그 수를 나타내는 문자열을 반환"""
-    d = ''  # 변환 뒤 문자열
-    dchar = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    n = len(str(x))
+import sys
+from PyQt5.QtWidgets import *
+from PyQt5 import uic
 
-    print(f'{r:2} | {x:>{n}d}')
-    while x > 0:
-        print('   +' + (n+2) * '-')
-        if x//r:
-            print(f'{r:2} | {x // r:>{n}d} ... {x % r}')
-        else:
-            print(f'     {x // r:>{n}d} ... {x % r}')
-        d += dchar[x % r]  # 해당하는 문자를 꺼내 결합
-        x //= r
-    return d[::-1]         # 역순으로 반환
+# UI파일 연결
+# 단, UI파일은 Python 코드 파일과 같은 디렉토리에 위치해야한다.
+form_class = uic.loadUiType("test.ui")[0]
 
-if __name__ == '__main__':
-    print('10진수를 n진수로 변환합니다.')
 
-    while True:
-        while True :  # 음이 아닌 정수를 입력받음
-            no = int(input('변환할 값으로 음이 아닌 정수를 입력하세요.: '))
-            if no > 0:
-                break
+# 화면을 띄우는데 사용되는 Class 선언
+class WindowClass(QMainWindow, form_class):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
 
-        while True :  # 2~36진수의 정수값을 입력받음
-            cd = int(input('어떤 진수로 변환할까요?: '))
-            if 2 <=  cd <=  36:
-                break
+        #버튼에 기능을 연결하는 코드
+        self.btn_1.clicked.connect(self.button1Function)
+        self.btn_2.clicked.connect(self.button2Function)
 
-        print(f'{cd}진수로는 {card_conv(no, cd)}입니다.')
+    #btn_1이 눌리면 작동할 함수
+    def button1Function(self) :
+        print("btn_1 Clicked")
 
-        retry = input( "한 번 더 변환할까요?(Y ... 예/N ... 아니오): ")
-        if retry in {'N', 'n'}:
-           break
+    #btn_2가 눌리면 작동할 함수
+    def button2Function(self) :
+        print("btn_2 Clicked")
+
+
+if __name__ == "__main__":
+    # QApplication : 프로그램을 실행시켜주는 클래스
+    app = QApplication(sys.argv)
+
+    # WindowClass의 인스턴스 생성
+    myWindow = WindowClass()
+
+    # 프로그램 화면을 보여주는 코드
+    myWindow.show()
+
+    # 프로그램을 이벤트루프로 진입시키는(프로그램을 작동시키는) 코드
+    app.exec_()
