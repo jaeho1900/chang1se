@@ -560,6 +560,40 @@ if __name__ == '__main__':
         if retry in {'N', 'n'}:
            break
 
+# #함수로 전달되는 매개변수 자료형에 따라서 달라지는 영향
+
+def sum_1ton(n):
+    """1부터 n까지 정수의 합"""
+    s = 0
+    while n > 0:
+        s += n
+        n -= 1
+    return s
+
+
+x = int(input('x의 값을 입력하세요.: '))
+print(f'1부터 {x}까지 합은 {sum_1ton(x)}입니다.')
+
+# 함수에서 이뮤터블형의 매개변수를 변경하면 원래 매개변수값에는 영향없다
+print(x)
+
+
+def change(lst, idx, val):
+    """lst[idx]의 값을 val로 업데이트"""
+    lst [idx] = val
+
+x = [11, 22, 33, 44, 55]
+print('x =', x)
+
+index = int(input('업데이트할 인덱스를 선택하세요.: '))
+value = int(input('새로운 값을 입력하세요.: '))
+
+change(x, index, value)
+print(f'x = {x}')
+
+# 함수에서 뮤터블형의 매개변수를 변경하면 원래 매개변수값도 바뀐다
+print(x)
+
 # -----------------------------------------
 # 3장. 검색 알고리즘
 # -----------------------------------------
