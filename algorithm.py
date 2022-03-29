@@ -560,8 +560,11 @@ if __name__ == '__main__':
         if retry in {'N', 'n'}:
            break
 
-# #함수로 전달되는 매개변수 자료형에 따라서 달라지는 영향
+# 함수로 전달되는 매개변수 자료형에 따라서 달라지는 영향----------
+# 함수에서 이뮤터블형의 매개변수를 변경하면 원래 매개변수값에는 영향없다
+# 함수에서 뮤터블형의 매개변수를 변경하면 원래 매개변수값도 바뀐다
 
+# 이뮤터블형 매개변수
 def sum_1ton(n):
     """1부터 n까지 정수의 합"""
     s = 0
@@ -574,10 +577,9 @@ def sum_1ton(n):
 x = int(input('x의 값을 입력하세요.: '))
 print(f'1부터 {x}까지 합은 {sum_1ton(x)}입니다.')
 
-# 함수에서 이뮤터블형의 매개변수를 변경하면 원래 매개변수값에는 영향없다
 print(x)
 
-
+# 뮤터블형 매개변수
 def change(lst, idx, val):
     """lst[idx]의 값을 val로 업데이트"""
     lst [idx] = val
@@ -591,8 +593,38 @@ value = int(input('새로운 값을 입력하세요.: '))
 change(x, index, value)
 print(f'x = {x}')
 
-# 함수에서 뮤터블형의 매개변수를 변경하면 원래 매개변수값도 바뀐다
 print(x)
+
+# 소수 구하기---------------------
+
+# 소수는 1과 자기자신(n) 이외에는 나누어 떨어지지 않음
+counter = 0
+for n in range(2,1001):   # 1000 이하의 소수 구하기
+    for i in range(2,n):  # 2 부터 최대 999까지 나누어 보기
+        counter += 1
+        if n%i == 0:
+            break
+    else:
+        print(n)
+print(f'나눗셈을 실행한 횟수: {counter}')
+
+# 알고리즘1: 소수는 2 부터 n-1까지 어떤 소수로도 나누어 떨어지지 않음
+counter = 0
+ptr = 0
+prime = [None] * 500      # 찾은 소수를 저장할 배열
+prime[ptr] = 2            # 2는 소수이므로 초기값으로 지정
+ptr += 1
+for n in range(3,1001,2):   # 홀수만을 대상으로 설정
+    for i in range(2,ptr):  # 이미 찾은 소수로 나누기
+        counter += 1
+        if n % prime[i] == 0:
+            break
+    else:
+        prime[ptr] = n
+        ptr += 1
+for i in range(ptr):
+    print(prime[i])
+print(f'나눗셈을 실행한 횟수: {counter}')
 
 # -----------------------------------------
 # 3장. 검색 알고리즘
