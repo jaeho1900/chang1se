@@ -1,6 +1,7 @@
 {
-    "python.pythonPath": "C:\\Users\\Administrator\\anaconda3\\python.exe",
-    "python.linting.pycodestyleEnabled": true,
     "python.formatting.provider": "black",
-    "python.languageServer": "Jedi"
+    "python.linting.pycodestyleEnabled": true,
+    "python.linting.pycodestyleArgs":
+        ["--ignore=E402", "--max-line-length=120"],
+    "editor.rulers": [120]
 }

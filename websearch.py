@@ -33,4 +33,3 @@ with pd.ExcelWriter("C:/Users/Administrator/Desktop/블루스캔동향.xlsx") as
 
 time.sleep(1)
 driver.close()
-//*[@id="sp_nws35"]/div[1]/div/div[1]/div[2]/a[1]/span/img
