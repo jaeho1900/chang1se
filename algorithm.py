@@ -687,7 +687,7 @@ print(x, y, z, m, n, sep='\n')
 
 # # 선형검색: 정렬되지 않은 데이터셋(의 유일한 방법)을 맨 앞부터 검색 수행
 # # 이진검색: 정렬된 데이터셋을 빠르게 검색 수행
-# # 해시검색: 추가, 삭제가 빈번한 데이터셋에서 빠른 검색 수행
+# # 해시법: 추가, 삭제도 효율적으로 수행가능한 빠른 검색법
 
 
 # # 선형검색 ----------
@@ -757,6 +757,193 @@ def seq_search(seq: Sequence, key: Any) -> int:
 # (1) 성공, a[pc]와 key가 일치하는 경우
 # (2) 실패, 검색범위가 더 이상 없음
 
+# [Do it! 실습 3-3] 이진 검색 알고리즘
+from typing import Any, Sequence
+
+def bin_search(a: Sequence, key: Any) -> int:
+    """시퀀스 a에서 key와 일치하는 원소를 이진 검색"""
+    pl = 0                   # 검색 범위 맨 앞 원소의 인덱스
+    pr = len(a) - 1          # 검색 범위 맨 끝 원소의 인덱스
+
+    while True:
+        pc = (pl + pr) // 2  # 검색범위 중앙원소의 인덱스, 정수의 나눗셈은 소수점 버림 (6+7)//2 는 6
+        if a[pc] == key:     # 검색조건1(성공)
+            return pc
+        elif a[pc] < key:
+            pl = pc + 1      # 검색 범위를 뒤쪽의 절반으로 좁힘
+        else:
+            pr = pc - 1      # 검색 범위를 앞쪽의 절반으로 좁힘
+        if pl > pr:          # 검색조건2(실패)
+            break
+    return -1
+
+if __name__ == '__main__':
+    num = int(input('원소 수를 입력하세요.: '))
+    x = [None] * num
+    print('배열 데이터를 오름차순으로 입력하세요.')
+    x[0] = int(input('x[0]: '))
+    for i in range(1, num):
+        while True:
+            x[i] = int(input(f'x[{i}]: '))
+            if x[i] >= x[i - 1]:
+                 break
+    ky = int(input('검색할 값을 입력하세요.: '))
+    idx = bin_search(x, ky)                     # ky와 같은 값의 원소를 x에서 검색
+    if idx < 0:
+        print('검색값을 갖는 원소가 존재하지 않습니다.')
+    else:
+        print(f'검색값은 x[{idx}]에 있습니다.')
+
+# [Do it! 실습 3C-3] 이진 검색 알고리즘의 실행 과정을 출력
+from typing import Any, Sequence
+
+
+def bin_search(a: Sequence, key: Any) -> int:
+    """시퀀스 a에서 key와 일치하는 원소를 이진 검색(실행 과정을 출력)"""
+    pl = 0
+    pr = len(a) - 1
+
+    print('   |', end='')
+    for i in range(len(a)):
+        print(f'{i : 4}', end='')
+    print()
+    print('---+' + (4 * len(a) + 2) * '-')
+
+    while True:
+        pc = (pl + pr) // 2
+
+        print('   |', end='')
+        if pl != pc:         # pl 원소 위에 <-를 출력
+            print((pl * 4 + 1) * ' ' + '<-' + ((pc - pl) * 4) * ' ' + '+', end='')
+        else:
+            print((pc * 4 + 1) * ' ' + '<+', end='')
+        if pc != pr:         # pr 원소 위에 ->를 출력
+            print(((pr - pc) * 4 - 2) * ' ' + '->')
+        else:
+            print('->')
+        print(f'{pc:3}|', end='')
+        for i in range(len(a)):
+            print(f'{a[i]:4}', end='')
+        print('\n   |')
+
+        if a[pc] == key:
+            return pc
+        elif a[pc] < key:
+            pl = pc + 1
+        else:
+            pr = pc - 1
+        if pl > pr:
+            break
+    return -1
+
+
+if __name__ == '__main__':
+    num = int(input('원소 수를 입력하세요.: '))
+    x = [None] * num
+    print('배열 데이터를 오름차순으로 입력하세요.')
+    x[0] = int(input('x[0]: '))
+    for i in range(1, num):
+        while True:
+            x[i] = int(input(f'x[{i}]: '))
+            if x[i] >= x[i - 1]:
+                 break
+    ky = int(input('검색할 값을 입력하세요.: '))
+    idx = bin_search(x, ky)                     # ky와 같은 값의 원소를 x에서 검색
+    if idx < 0:
+        print('검색값을 갖는 원소가 존재하지 않습니다.')
+    else:
+        print(f'검색값은 x[{idx}]에 있습니다.')
+
+
+# # 해시법 ----------
+
+# 배열의키(원소값)를 원소개수로 나눈 나머지(해시값)를 배열 인덱스로
+# 지정하여 새로운 해시테이블 생성, 해시테이블의 원소는 버킷이라고 함
+
+# 체인법으로 해시 함수 구현하기
+# Do it! 실습 3-5 [A]
+from __future__ import annotations
+from typing import Any, Type
+import hashlib
+
+class Node:
+    """해시를 구성하는 노드"""
+
+    def __init__(self, key: Any, value: Any, next: Node) -> None:
+        """초기화"""
+        self.key   = key    # 키
+        self.value = value  # 값
+        self.next  = next   # 뒤쪽 노드를 참조
+
+# Do it! 실습 3-5 [B]
+class ChainedHash:
+    """체인법을 해시 클래스 구현"""
+
+    def __init__(self, capacity: int) -> None:
+        """초기화"""
+        self.capacity = capacity             # 해시 테이블의 크기를 지정
+        self.table = [None] * self.capacity  # 해시 테이블(리스트)을 선언
+
+    def hash_value(self, key: Any) -> int:
+        """해시값을 구함"""
+        if isinstance(key, int):
+            return key % self.capacity
+        return(int(hashlib.sha256(str(key).encode()).hexdigest(), 16) % self.capacity)
+
+# Do it! 실습 3-5[C]
+    def search(self, key: Any) -> Any:
+        """키가 key인 원소를 검색하여 값을 반환"""
+        hash = self.hash_value(key)  # 검색하는 키의 해시값
+        p = self.table[hash]         # 노드를 노드
+
+        while p is not None:
+            if p.key == key:
+                 return p.value  # 검색 성공
+            p = p.next           # 뒤쪽 노드를 주목
+
+        return None              # 검색 실패
+
+    def add(self, key: Any, value: Any) -> bool:
+        """키가 key이고 값이 value인 원소를 삽입"""
+        hash = self.hash_value(key)  # 삽입하는 키의 해시값
+        p = self.table[hash]         # 주목하는 노드
+
+        while p is not None:
+            if p.key == key:
+                return False         # 삽입 실패
+            p = p.next               # 뒤쪽 노드에 주목
+
+        temp = Node(key, value, self.table[hash])
+        self.table[hash] = temp      # 노드를 삽입
+        return True                  # 삽입 성공
+
+# Do it! 실습 3-5[D]
+    def remove(self, key: Any) -> bool:
+        """키가 key인 원소를 삭제"""
+        hash = self.hash_value(key)  # 삭제할 키의 해시값
+        p = self.table[hash]         # 주목하고 있는 노드
+        pp = None                    # 바로 앞 주목 노드
+
+        while p is not None:
+            if p.key == key:  # key를 발견하면 아래를 실행
+                if pp is None:
+                    self.table[hash] = p.next
+                else:
+                    pp.next = p.next
+                return True  # key 삭제 성공
+            pp = p
+            p = p.next       # 뒤쪽 노드에 주목
+        return False         # 삭제 실패(key가 존재하지 않음)
+
+    def dump(self) -> None:
+        """해시 테이블을 덤프"""
+        for i in range(self.capacity):
+            p = self.table[i]
+            print(i, end='')
+            while p is not None:
+                print(f'  → {p.key} ({p.value})', end='')  # 해시 테이블에 있는 키와 값을 출력
+                p = p.next
+            print()
 
 
 # -----------------------------------------
