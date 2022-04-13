@@ -685,46 +685,78 @@ print(x, y, z, m, n, sep='\n')
 # 3장. 검색 알고리즘
 # -----------------------------------------
 
-
-# # 선형검색: 정렬되지 않은 무작위 데이터셋(의 유일한 방법)을 맨 앞부터 검색 수행
-# # 이진검색: 규칙존재하는 데이터셋에서 빠른 검색 수행
+# # 선형검색: 정렬되지 않은 데이터셋(의 유일한 방법)을 맨 앞부터 검색 수행
+# # 이진검색: 정렬된 데이터셋을 빠르게 검색 수행
 # # 해시검색: 추가, 삭제가 빈번한 데이터셋에서 빠른 검색 수행
+
+
+# # 선형검색 ----------
+
+# 선형검색의 종료 조건(2가지)
+# (1) 성공, 검색값과 일치하는 원소 찾음: if a[i] == key
+# (2) 실패, 검색값을 못찾고 배열의 맨 끝에 도착: if i == len(a)
 
 # [Do it! 실습 3-1] while 문으로 작성한 선형 검색 알고리즘
 from typing import Any, Sequence
+
 
 def seq_search(a: Sequence, key: Any) -> int:
     """시퀀스 a에서 key값이 같은 원소를 선형 검색(while 문)"""
     i = 0
     while True:
-        if i == len(a):  # 선형 검색에 실패조건: -1을 반환
-            return -1
-        if a[i] == key:  # 선형 검색에 성공조건: 현재 조사한 배열의 인덱스를 반환
+        if a[i] == key:  # 종료조건1
             return i
+        if i == len(a):  # 종료조건2
+            return -1
         i += 1
 
-# def seq_search(a: Sequence, key: Any) -> int:
-#     """시퀀스 a에서 key값이 같은 요소를 선형 검색(for 문)"""
+
+# for문으로 구현하면 코드가 짧아짐
 #     for i in range(len(a)):
 #         if a[i] == key:
-#             return i  # 검색 성공(인덱스를 반환)
-#     return -1         # 검색 실패(-1을 반환)
+#             return i
+#     return -1
 
 if __name__ == '__main__':
-    num = int(input('원소 수를 입력하세요.: '))  # num 값을 입력
-    x = [None] * num                            # 원소 수가 num인 배열을 생성
-
+    num = int(input('원소 수를 입력하세요.: '))
+    x = [None] * num
     for i in range(num):
         x[i] = int(input(f'x[{i}]: '))
-
-    ky = int(input('검색할 값을 입력하세요.: '))  # 검색할 키 ky를 입력받기
-
-    idx = seq_search(x, ky)                      # ky와 같은 원소를 x에서 검색
-
+    ky = int(input('검색할 값을 입력하세요.: '))
+    idx = seq_search(x, ky)
     if idx == -1:
         print('검색값을 갖는 원소가 존재하지 않습니다.')
     else:
         print(f'검색값은 x[{idx}]에 있습니다.')
+
+# # 보초법
+# 검색할 원소를 배열의 마지막에 넣고 검색하여
+# 종료조건2(실패) 가능성을 제거하여 if 판단 횟수를 반으로 줄임
+
+# [Do it! 실습 3-3] 선형 검색 알고리즘(실습 3-1)을 보초법으로 수정
+from typing import Any, Sequence
+import copy
+
+
+def seq_search(seq: Sequence, key: Any) -> int:
+    """시퀀스 seq에서 key와 일치하는 원소를 선형 검색(보초법)"""
+    a = copy.deepcopy(seq)  # seq를 복사
+    a.append(key)           # 보초 key를 추가
+
+    i = 0
+    while True:
+        if a[i] == key:
+            break  # 검색에 성공하면 while 문을 종료
+        i += 1
+    return -1 if i == len(seq) else i
+
+
+# # 이진검색 ----------
+
+# 이진검색의 종료 조건(2가지)
+# (1) 성공, a[pc]와 key가 일치하는 경우
+# (2) 실패, 검색범위가 더 이상 없음
+
 
 
 # -----------------------------------------
