@@ -860,12 +860,18 @@ if __name__ == '__main__':
 # 배열의키(원소값)를 원소개수로 나눈 나머지(해시값)를 배열 인덱스로
 # 지정하여 새로운 해시테이블 생성, 해시테이블의 원소는 버킷이라고 함
 
-# 체인법으로 해시 함수 구현하기
-# Do it! 실습 3-5 [A]
+
+# # 체인법(오픈해시법): 해시값을 기준으로 연결 리스트 생성
+
+# 해시테이블의 크기는 소수를 선호, 테이블이 크면 충돌위험은 감소하나 메모리낭비와 상충
+# 개별 버킷은 노드클래스(key, value, next)로 생성
+
+# # chained_hash.py 로 저장 =====
 from __future__ import annotations
 from typing import Any, Type
 import hashlib
 
+# 노드 클래스 만들기
 class Node:
     """해시를 구성하는 노드"""
 
@@ -875,7 +881,7 @@ class Node:
         self.value = value  # 값
         self.next  = next   # 뒤쪽 노드를 참조
 
-# Do it! 실습 3-5 [B]
+# 해시 클래스 만들기
 class ChainedHash:
     """체인법을 해시 클래스 구현"""
 
@@ -889,8 +895,12 @@ class ChainedHash:
         if isinstance(key, int):
             return key % self.capacity
         return(int(hashlib.sha256(str(key).encode()).hexdigest(), 16) % self.capacity)
+        # str(key): key를 문자열로 변환한 후 encode(): 바이트문자열로 재변환
+        # hashlib.sha256(): 바이트문자열의 해시값을 구함
+        # hashlib.sha256().hexdigest(): 해시값에서 16진수 문자열을 꺼냄
+        # int(): 16진수 int형 변환
 
-# Do it! 실습 3-5[C]
+# 원소검색
     def search(self, key: Any) -> Any:
         """키가 key인 원소를 검색하여 값을 반환"""
         hash = self.hash_value(key)  # 검색하는 키의 해시값
@@ -903,6 +913,7 @@ class ChainedHash:
 
         return None              # 검색 실패
 
+# 원소추가: 리스트의 맨앞에 추가
     def add(self, key: Any, value: Any) -> bool:
         """키가 key이고 값이 value인 원소를 삽입"""
         hash = self.hash_value(key)  # 삽입하는 키의 해시값
@@ -917,7 +928,7 @@ class ChainedHash:
         self.table[hash] = temp      # 노드를 삽입
         return True                  # 삽입 성공
 
-# Do it! 실습 3-5[D]
+# 원소삭제
     def remove(self, key: Any) -> bool:
         """키가 key인 원소를 삭제"""
         hash = self.hash_value(key)  # 삭제할 키의 해시값
@@ -935,6 +946,7 @@ class ChainedHash:
             p = p.next       # 뒤쪽 노드에 주목
         return False         # 삭제 실패(key가 존재하지 않음)
 
+# 원소출력
     def dump(self) -> None:
         """해시 테이블을 덤프"""
         for i in range(self.capacity):
@@ -944,6 +956,54 @@ class ChainedHash:
                 print(f'  → {p.key} ({p.value})', end='')  # 해시 테이블에 있는 키와 값을 출력
                 p = p.next
             print()
+# chained_hash.py 파일의 끝 =====
+
+# [Do it! 실습 3-6] 체인법을 구현하는 해시 클래스 ChainedHash의 사용
+from enum import Enum
+from chained_hash import ChainedHash
+
+Menu = Enum('Menu', ['추가', '삭제', '검색', '덤프', '종료'])  # 메뉴를 선언
+
+def select_menu() -> Menu:
+    """메뉴 선택"""
+    s = [f'({m.value}){m.name}' for m in Menu]
+    while True:
+        print(*s, sep = '   ', end='')
+        n = int(input(': '))
+        if 1 <=  n <=  len(Menu):
+            return Menu(n)
+
+hash = ChainedHash(13)     # 크기가 13인 해시 테이블을 생성
+
+while True:
+    menu = select_menu()   # 메뉴 선택
+
+    if menu == Menu.추가:  # 추가
+        key = int(input('추가할 키를 입력하세요.: '))
+        val = input('추가할 값을 입력하세요.: ')
+        if not hash.add(key, val):
+            print('추가를 실패했습니다!')
+
+    elif menu == Menu.삭제:  # 삭제
+        key = int(input('삭제할 키를 입력하세요.: '))
+        if not hash.remove(key):
+            print('삭제를 실패했습니다!')
+
+    elif menu == Menu.검색:  # 검색
+        key = int(input('검색할 키를 입력하세요.: '))
+        t = hash.search(key)
+        if t is not None:
+            print(f'검색한 키를 갖는 값은 {t}입니다.')
+        else:
+            print('검색할 데이터가 없습니다.')
+
+    elif menu == Menu.덤프:  # 덤프
+        hash.dump()
+
+    else:  # 종료
+        break
+
+# # 오픈주소법(닫힌해시법): 충돌하면 재해시를 통하여 새로운 버킷을 찾음
 
 
 # -----------------------------------------
