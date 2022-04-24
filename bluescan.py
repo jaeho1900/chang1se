@@ -18,8 +18,8 @@ keyword_except = '스카이블루에셋'
 start_date = '2021.01.01'
 end_date = '2021.12.31'
 
-sd = start_date.replace('.','')
-ed = end_date.replace('.','')
+sd = start_date.replace('.', '')
+ed = end_date.replace('.', '')
 keyword = urllib.parse.quote(keyword_input)
 keyword2 = urllib.parse.quote(keyword_except)
 
@@ -38,7 +38,8 @@ link = []
 for i in driver.find_elements_by_css_selector('.info.press'):
     agency.append(i.text)
 for i in driver.find_elements_by_css_selector('span.info'):
-    if len(i.text) == 11: date.append(i.text)
+    if len(i.text) == 11:
+        date.append(i.text)
 for i in driver.find_elements_by_css_selector('div.news_wrap.api_ani_send > div > a'):
     title.append(i.text)
 for i in driver.find_elements_by_css_selector('div.news_wrap.api_ani_send > div > a'):

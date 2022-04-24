@@ -1435,7 +1435,7 @@ while True:
 # 디큐를 하면 2번째 이후 모든 원소의 인덱스번호가 하나씩 앞으로 옮겨지며 업무복잡도가 큼
 # 이의 해결방안으로 시작인덱스번호는 프론트변수로, 마지막인덱스번호는 리얼변수의 증감으로 관리함
 
-# 고정 길이 큐 클래스 FixedQueue 구현하기
+# 고정 길이 큐 클래스 fixed_queue.py 저장 =====
 from typing import Any
 
 class FixedQueue:
@@ -1489,7 +1489,6 @@ class FixedQueue:
             self.front = 0               # 배열의 처음(0)으로 보냄
         return x
 
-# Do it! 실습 4-3 [D]
     def peek(self) -> Any:
         """데이터를 피크합니다(맨 앞 데이터를 들여다 봄)"""
         if self.is_empty():
@@ -1499,7 +1498,7 @@ class FixedQueue:
     def find(self, value: Any) -> Any:
         """큐에서 value를 찾아 인덱스를 반환하고 없으면 -1을 반환합니다"""
         for i in range(self.no):
-            idx = (i + self.front) % self.capacity
+            idx = (i + self.front) % self.capacity  # 큐의 맨앞부터 검색
             if self.que[idx] == value:  # 검색 성공
                 return idx
         return -1  # 검색 실패
@@ -1519,7 +1518,7 @@ class FixedQueue:
 
     def clear(self) -> None:
         """큐의 모든 데이터를 비웁니다"""
-        self.no = self.front = self.rear = 0
+        self.no = self.front = self.rear = 0  # 실제 원솟값 삭제는 불필요
 
     def dump(self) -> None:
         """모든 데이터를 맨 앞에서 맨 끝 순서로 출력합니다"""
@@ -1529,10 +1528,106 @@ class FixedQueue:
             for i in range(self.no):
                 print(self.que[(i + self.front) % self.capacity], end=' ')
             print()
+# fixed_queue.py 끝 =====
+
+# [Do it! 실습 4-4] 고정 길이 큐 클래스(FixedQueue)를 사용하기
+from enum import Enum
+from fixed_queue import FixedQueue
+
+Menu = Enum('Menu', ['인큐', '디큐', '피크', '검색', '덤프', '종료'])
+
+def select_menu() -> Menu:
+    """메뉴 선택"""
+    s = [f'({m.value}){m.name}' for m in Menu]
+    while True:
+        print(*s, sep='   ', end='')
+        n = int(input(': '))
+        if 1 <= n <= len(Menu):
+            return Menu(n)
+
+q = FixedQueue(64)  # 최대 64개를 인큐할 수 있는 큐 생성(고정 길이)
+
+while True:
+    print(f'현재 데이터 개수: {len(q)} / {q.capacity}')
+    menu = select_menu()   # 메뉴 선택
+
+    if menu == Menu.인큐:  # 인큐
+        x = int(input('인큐할 데이터를 입력하세요.: '))
+        try:
+            q.enque(x)
+        except FixedQueue.Full:
+            print('큐가 가득 찼습니다.')
+
+    elif menu == Menu.디큐:  # 디큐
+        try:
+            x = q.deque()
+            print(f'디큐한 데이터는 {x}입니다.')
+        except FixedQueue.Empty:
+            print('큐가 비어 있습니다.')
+
+    elif menu == Menu.피크:  # 피크
+        try:
+            x = q.peek()
+            print(f'피크한 데이터는 {x}입니다.')
+        except FixedQueue.Empty:
+            print('큐가 비었습니다.')
+
+    elif menu == Menu.검색:  # 검색
+        x = int(input('검색할 값을 입력하세요.: '))
+        if x in q:
+            print(f'{q.count(x)}개 포함되고, 맨 앞의 위치는 {q.find(x)}입니다.')
+        else:
+            print('검색값을 찾을 수 없습니다.')
+
+    elif menu == Menu.덤프:  # 덤프
+        q.dump()
+    else:
+        break
+
+# # 링 버퍼의 활용: n개의 배열에서 최근 입력된 n개만 남기고 오래된 원소는 버림
+n = int(input('정수를 몇 개 저장할까요? : '))
+a = [None] * n  # 입력 받은 값을 저장하는 배열
+
+cnt = 0         # 입력 받은 개수
+while True:
+    # 입력값을 저장할 인덱스 구하기
+    a[cnt % n] = int(input((f'{cnt + 1} 번째 정수를 입력하세요.: ')))
+    # cnt 값을 증가시켜 링 버퍼를 순환하면서 저장하기
+    cnt += 1
+
+    retry = input(f'계속 할까요?(Y ... Yes / N ... No) : ')
+    if retry in {'N', 'n'}:
+        break
+
+i = cnt - n
+if i < 0: i = 0
+
+while i < cnt:
+    print(f'{i + 1}번째 = {a[i % n]}')  # %연산자를 사용하여 마지막 남은 값의 인덱스 순서대로 출력
+    i += 1
+
+# # 양방향 대기열 덱(double-ended queue): 양끝에서 입출력이 가능한 큐와 스택을 합친 데이터 자료구조
+# 파이썬에서는 collections.deque컨테이너로 제공됨
+
 
 # -----------------------------------------
 # 5장. 재귀 알고리즘
 # -----------------------------------------
+
+# # 재귀 알로리즘의 기본: 자기 자신을 사용하여 정의
+math.factorial(10)
+# [Do it! 실습 5-1] 양의 정수인 팩토리얼 구하기
+def factorial(n: int) -> int:
+    """양의 정수 n의 팩토리얼을 구하는 과정"""
+    if n > 0:
+        return n * factorial(n - 1)
+    else:
+        return 1
+
+if __name__ == '__main__':
+    n = int(input('출력할 팩토리얼 값을 입력하세요.: '))
+    print(f'{n}의 팩토리얼은 {factorial(n)}입니다.')
+
 # -----------------------------------------
 # 6장. 정렬 알고리즘
 # -----------------------------------------
