@@ -1658,6 +1658,60 @@ def recur(n: int) -> int:
 x = int(input('정숫값을 입력하세요.: '))
 recur(x)
 
+# [Do it! 실습 5-4] 재귀 함수의 구현(꼬리 재귀를 제거)
+def recur(n: int) -> int:
+    """꼬리재귀(recur(n - 2)) 제거"""
+    while n > 0:
+        recur(n - 1)
+        print(n)
+        n = n - 2
+
+x = int(input('정수값을 입력하세요.: '))
+recur(x)
+
+# [Do it! 실습 5-5] 스택으로 재귀 함수 구현하기(재귀를 제거)
+from stack import Stack  # stack.py의 Stack 클래스를 임포트
+
+def recur(n: int) -> int:
+    """재귀를 제거한 함수 recur"""
+    s = Stack(n)
+
+    while True:
+        if n > 0:
+            s.push(n)         # n 값을 푸시
+            n = n - 1
+            continue          # while문 시작으로 돌아감
+        if not s.is_empty():  # 스택이 비어 있지 않으면
+            n = s.pop()       # 저장하고 있는 값을 n에 팝
+            print(n)
+            n = n - 2
+            continue
+        break                 # while문 종료
+
+x = int(input('정수값을 입력하세요.: '))
+recur(x)
+
+# # 하노이의 탑 ----------
+
+# [1] 마지막원반을 제외한 상단원반들을 시작기둥(1)에서 중간기둥(2)으로 이동
+# [2] 마지막원반을 시작기둥(1)에서 마지막기둥(3)으로 이동
+# [3] 중간기둥의 원반들을 중간기둥(2)에서 마지막기둥(3)으로 이동
+
+# [Do it! 실습 5-6] 하노이의 탑 구현하기
+def move(no: int, x: int, y: int) -> None:
+    """원반을 no개를 x 기둥에서 y 기둥으로 옮김"""
+    if no > 1:                         # [1]과정
+        move(no - 1, x, 6 - x - y)     # 6(기둥번호의 합)-x-y으로 중간기둥 번호를 구함
+
+    print(f'원반 [{no}]을(를) {x}기둥에서 {y}기둥으로 옮깁니다.')  # [2]과정
+
+    if no > 1:                         # [3]과정
+        move(no - 1, 6 - x - y, y)
+
+print('하노이의 탑을 구현하는 프로그램입니다.')
+n = int(input('원반의 개수를 입력하세요.: '))
+move(n, 1, 3)
+
 # -----------------------------------------
 # 6장. 정렬 알고리즘
 # -----------------------------------------
