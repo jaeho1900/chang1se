@@ -3,7 +3,10 @@
 220426
 """
 
-#%% 네이버 검색어 스크랩
+
+# ==================
+# # 네이버 검색어 스크랩
+# ==================
 
 import urllib
 from bs4 import BeautifulSoup as bs
@@ -104,7 +107,10 @@ with pd.ExcelWriter("C:/Users/Administrator/Desktop/{}.xlsx".format(keyword_inpu
 time.sleep(1)
 driver.close()
 
-#%% 판다스 분석
+
+# ==================
+# # 판다스 분석
+# ==================
 
 import pandas as pd
 import datetime
@@ -122,6 +128,7 @@ trend_df = pd.read_excel(
             'c:/Users/Administrator/Desktop/에스원_동향.xlsx',
             sheet_name = '취합',
             usecols='B:D',
+            skipfooter = 2,
             parse_dates = ['날짜'])
 
 asset_df = pd.read_excel(
@@ -140,7 +147,7 @@ asset_count = asset_df['기사날짜'].value_counts(dropna = False)
 scan_count = scan_df['기사날짜'].value_counts(dropna = False)
 new_df = pd.merge(trend_df, asset_count, how='outer', left_on='날짜', right_index=True)
 new_df = pd.merge(new_df, scan_count, how='outer', left_on='날짜', right_index=True)
-new_df.columns = ['날짜', '블루스캔검색추이', '블루에셋검색추이', '블루에셋언론기사건수', '블루스캔언론기사건수']
+new_df.columns = ['날짜', '블루에셋검색추이', '블루스캔검색추이', '블루에셋언론기사건수', '블루스캔언론기사건수']
 new_df.fillna(0, inplace=True)
 
 new_df.to_excel('c:/Users/Administrator/Desktop/에스원_동향2.xlsx',
@@ -166,14 +173,14 @@ ax2.set_ylim(0, 100)
 ax2.grid(True)
 ax2.set_title('블루스캔 네이버 검색추이')
 
-ax3.bar(new_df['날짜'], new_df['블루에셋언론기사건수'], color='blue')
+ax3.bar(new_df['날짜'], new_df['블루에셋언론기사건수'], color='blue', width=2)
 ax3.set_ylabel('기사건수(개)')
 ax3.set_xlim(new_df['날짜'].min()-pd.Timedelta(days=5), new_df['날짜'].max()+pd.Timedelta(days=5))
 ax3.set_ylim(0, 30)
 ax3.grid(True)
 ax3.set_title('블루에셋 언론기사건수')
 
-ax4.bar(new_df['날짜'], new_df['블루스캔언론기사건수'], color='magenta')
+ax4.bar(new_df['날짜'], new_df['블루스캔언론기사건수'], color='magenta', width=2)
 ax4.set_xlim(new_df['날짜'].min()-pd.Timedelta(days=5), new_df['날짜'].max()+pd.Timedelta(days=5))
 ax4.set_ylim(0, 30)
 ax4.grid(True)
