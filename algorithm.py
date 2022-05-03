@@ -1733,7 +1733,7 @@ def put() -> None:
 def set(i: int) -> None:
     """i 열에 퀸을 배치"""
     for j in range(8):
-        pos[i] = j   # 퀸을 j행에 배치
+        pos[i] = j   # 퀸을 'i열j행'에 배치
         if i == 7 :  # 모든 열에 배치를 종료
             put()
         else:
@@ -1783,8 +1783,8 @@ def set(i: int) -> None:
     """i 열의 알맞은 위치에 퀸을 놓기"""
     for j in range(8):
         if(     not flag_a[j]           # j 행에 아직 퀸을 놓지 않았으면
-            and not flag_b[i + j]       # 대각선 방향(↙↗)으로 퀸이 배치 되지 않았다면
-            and not flag_c[i - j + 7]): # 대각선 방향( ↘↖)으로 퀸이 배치 되지 않았다면
+            and not flag_b[i + j]       # 대각선 방향(↙↗)으로 퀸이 배치 되지 않았다면(대각선의 인덱스x+y합이 동일함 활용)
+            and not flag_c[i - j + 7]): # 대각선 방향( ↘↖)으로 퀸이 배치 되지 않았다면(대각선의 인덱스x-y+7의 값과 동일함 활용)
             pos[i] = j          # 퀸을 j 행에 놓기
             if i == 7:          # 모든 열에 퀸을 배치하는 것을 완료
                 put()
