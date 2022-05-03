@@ -1717,11 +1717,156 @@ move(n, 1, 3)
 # 문제: 8개의 퀸이 서로 공격하여 잡을 수 없도록 8 x 8 체스판에 배치하시오
 # (퀸은 가로, 세로, 대각선의 8 방향으로 이동하여 상대를 잡을 수 있다)
 # 규칙1. 각 열에 퀸을 1개만 배치한다(1열에 퀸을 배치하는 방법은 8가지(8행))
+# 규칙2. 각 행에 퀸을 1개만 배치한다
+# 규칙3. 대각선에 중첩되지 않도록 퀸을 1개만 배치한다
 # 퀸을 1개 배치하고 나서 문제를 다시 8개의 부분 문제로 나누는 작업을 반복합니다
+
+# [규칙1] 각 열에 1개 퀸을 배치한 조합을 재귀적으로 나열하기
+pos = [0] * 8  # 각 열에서 퀸의 위치를 출력
+
+def put() -> None:
+    """각 열에 배치한 퀸의 위치를 출력"""
+    for i in range(8):
+        print(f'{pos[i]:2}', end='')
+    print()
+
+def set(i: int) -> None:
+    """i 열에 퀸을 배치"""
+    for j in range(8):
+        pos[i] = j   # 퀸을 j행에 배치
+        if i == 7 :  # 모든 열에 배치를 종료
+            put()
+        else:
+            set(i + 1)  # 다음 열에 퀸을 배치(재귀호출)
+
+set(0)  # 0 열에 퀸을 배치
+
+# [+규칙2] 행과 열에 퀸을 1개 배치하는 조합을 재귀적으로 나열하기
+pos = [0] * 8       # 각 열에서 퀸의 위치
+flag = [False] * 8  # 각 행에 퀸을 배치했는지 체크
+
+def put() -> None:
+    """각 열에 놓은 퀸의 위치를 출력"""
+    for i in range(8):
+        print(f'{pos[i]:2}', end='')
+    print()
+
+def set(i: int) -> None:
+    """i 열의 알맞은 위치에 퀸을 배치"""
+    for j in range(8):
+        if not flag[j]:  # j 행에 퀸을 배치하지 않았으면
+            pos[i] = j   # 퀸을 j 행에 배치
+            if i == 7:   # 모든 열에 퀸을 배치를 완료
+                put()
+            else:
+                flag[j] = True   # j 행에 퀸을 배치하면 true, 그렇지않으면 false 유지
+                set(i + 1)       # 다음 열에 퀸을 배치
+                flag[j] = False  # flag를 false로 초기화
+
+set(0)  # 0열에 퀸을 배치
+
+# [+규칙3] 8퀸 문제 알고리즘 구현하기(퀸을 놓는 상황을 네모로 표시)
+pos = [0] * 8          # 각 열에 배치한 퀸의 위치
+flag_a = [False] * 8   # 각 행에 퀸을 배치했는지 체크
+flag_b = [False] * 15  # 대각선 방향(↙↗)으로 퀸을 배치했는지 체크
+flag_c = [False] * 15  # 대각선 방향( ↘↖)으로 퀸을 배치했는지 체크
+
+def put() -> None:
+    """퀸을 놓는 상황을 □와 ■로 출력"""
+    for j in range(8):
+        for i in range(8):
+            print('■' if pos[i] == j else '□', end='')
+        print()
+    print()
+
+def set(i: int) -> None:
+    """i 열의 알맞은 위치에 퀸을 놓기"""
+    for j in range(8):
+        if(     not flag_a[j]           # j 행에 아직 퀸을 놓지 않았으면
+            and not flag_b[i + j]       # 대각선 방향(↙↗)으로 퀸이 배치 되지 않았다면
+            and not flag_c[i - j + 7]): # 대각선 방향( ↘↖)으로 퀸이 배치 되지 않았다면
+            pos[i] = j          # 퀸을 j 행에 놓기
+            if i == 7:          # 모든 열에 퀸을 배치하는 것을 완료
+                put()
+            else:
+                flag_a[j] = flag_b[i + j] = flag_c[i - j + 7] = True
+                set(i + 1)      # 다음 열에 퀸을 놓기
+                flag_a[j] = flag_b[i + j] = flag_c[i - j + 7] = False
+
+set(0)          # 0 열에 퀸을 놓기
+
 
 # -----------------------------------------
 # 6장. 정렬 알고리즘
 # -----------------------------------------
+
+# # 버블정렬
+
+# [Do it! 실습 6-1] 버블 정렬 알고리즘 구현하기
+from typing import MutableSequence
+
+def bubble_sort(a: MutableSequence) -> None:
+    """버블 정렬"""
+    n = len(a)
+    for i in range(n - 1):             # n-1개의 정렬이 끝나면 마지막 원소는 이미 끝에 놓임
+        for j in range(n - 1, i, -1):  # 패스(비교,교환) 과정
+            if a[j - 1] > a[j]:
+                a[j - 1], a[j] = a[j], a[j - 1]
+
+if __name__ == '__main__':
+    print('버블 정렬을 수행합니다.')
+    num = int(input('원소 수를 입력하세요.: '))
+    x = [None] * num  # 원소 수가 num인 배열을 생성
+
+    for i in range(num):
+        x[i] = int(input(f'x[{i}] : '))
+
+    bubble_sort(x)  # 배열 x를 버블 정렬
+
+    print('오름차순으로 정렬했습니다.')
+    for i in range(num):
+        print(f'x[{i}] = {x[i]}')
+
+# [Do it! 실습 6-2] 버블 정렬 알고리즘 구현하기(정렬과정 상세출력 코드추가)
+from typing import MutableSequence
+
+def bubble_sort_verbose(a: MutableSequence) -> None:
+    """버블 정렬(정렬 과정을 출력)"""
+    ccnt = 0  # 비교 횟수
+    scnt = 0  # 교환 횟수
+    n = len(a)
+    for i in range(n - 1):
+        print(f'패스 {i + 1}')
+        for j in range(n - 1, i, -1):
+            for m in range(0, n - 1):
+               print(f'{a[m]:2}' + ('  ' if m != j - 1 else
+                                    ' +' if a[j - 1] > a[j] else ' -'),
+                                    end='')
+            print(f'{a[n - 1]:2}')
+            ccnt += 1
+            if a[j - 1] > a[j]:
+                scnt += 1
+                a[j - 1], a[j] = a[j], a[j - 1]
+        for m in range(0, n - 1):
+           print(f'{a[m]:2}', end='  ')
+        print(f'{a[n - 1]:2}')
+    print(f'비교를 {ccnt}번 했습니다.')
+    print(f'교환을 {scnt}번 했습니다.')
+
+if __name__ == '__main__':
+    print('버블 정렬을 수행합니다.')
+    num = int(input('원소 수를 입력하세요.: '))
+    x = [None] * num  # 원소 수가 num인 배열을 생성
+
+    for i in range(num):
+        x[i] = int(input(f'x[{i}]: '))
+
+    bubble_sort_verbose(x)  # 배열 x를 버블 정렬
+
+    print('오름차순으로 정렬했습니다.')
+    for i in range(num):
+        print(f'x[{i}] = {x[i]}')
+
 # -----------------------------------------
 # 7장. 문자열 검색
 # -----------------------------------------
