@@ -28,7 +28,11 @@ keyword2 = urllib.parse.quote(keyword_except)
 options = webdriver.ChromeOptions()
 options.add_argument('headless')
 driver = webdriver.Chrome(executable_path=r'D:/2022/_Py/_common/chromedriver.exe', chrome_options=options)
-url = rf"https://search.naver.com/search.naver?sm=tab_hty.top&where=news&query=%22{keyword}%22+-%22{keyword2}%22&oquery=%22{keyword}%22&tqi=hDQsCdp0Jywssl88giGsssssshN-194891&nso=so%3Ar%2Cp%3Afrom{sd}to{ed}%2Ca%3Aall&de={end_date}&ds={start_date}&mynews=0&office_section_code=0&office_type=0&pd=3&photo=0&sort=0"
+url = """
+      https://search.naver.com/search.naver?sm=tab_hty.top&where=news&query=%22{keyword}%22+-%22{keyword2}%22&
+      oquery=%22{keyword}%22&tqi=hDQsCdp0Jywssl88giGsssssshN-194891&nso=so%3Ar%2Cp%3Afrom{sd}to{ed}%2Ca%3Aall&
+      de={end_date}&ds={start_date}&mynews=0&office_section_code=0&office_type=0&pd=3&photo=0&sort=0
+      """
 driver.get(url)
 time.sleep(3)
 
@@ -38,6 +42,7 @@ t_date = []
 t_title = []
 t_link = []
 t_relatenews = []
+
 
 # 페이지스크랩 ----------
 def page_scrap():
@@ -71,12 +76,14 @@ def page_scrap():
     for i in soup.select('a.news_more'):
         t_relatenews.append('https://search.naver.com/search.naver' + i.get('href'))
 
+
 # 페이지넘김 ----------
 def page_scrap_click():
     while driver.find_element_by_css_selector('a.btn_next').get_attribute('aria-disabled') == 'false':
         page_scrap()
         driver.find_element_by_css_selector('a.btn_next').click()
         time.sleep(3)
+
 
 # 실행 ----------
 try:
@@ -117,41 +124,37 @@ import datetime
 import matplotlib.pyplot as plt
 
 from matplotlib import rc
-rc('font', family = 'malgun gothic')
+rc('font', family='malgun gothic')
 
 # trend_df = pd.read_excel(
 #             'c:/Users/Administrator/Desktop/에스원_동향.xlsx',
 #             skiprows=6,
 #             parse_dates = ['날짜'])
 
-trend_df = pd.read_excel(
-            'c:/Users/Administrator/Desktop/에스원_동향.xlsx',
-            sheet_name = '취합',
-            usecols='B:D',
-            skipfooter = 2,
-            parse_dates = ['날짜'])
+trend_df = pd.read_excel('c:/Users/Administrator/Desktop/에스원_동향.xlsx',
+                         sheet_name='취합',
+                         usecols='B:D',
+                         skipfooter=2,
+                         parse_dates=['날짜'])
 
-asset_df = pd.read_excel(
-            'c:/Users/Administrator/Desktop/에스원_동향.xlsx',
-            sheet_name = '블루에셋',
-            usecols='B:E',
-            parse_dates = ['기사날짜'])
+asset_df = pd.read_excel('c:/Users/Administrator/Desktop/에스원_동향.xlsx',
+                         sheet_name='블루에셋',
+                         usecols='B:E',
+                         parse_dates=['기사날짜'])
 
-scan_df = pd.read_excel(
-            'c:/Users/Administrator/Desktop/에스원_동향.xlsx',
-            sheet_name = '블루스캔',
-            usecols='B:E',
-            parse_dates = ['기사날짜'])
+scan_df = pd.read_excel('c:/Users/Administrator/Desktop/에스원_동향.xlsx',
+                        sheet_name='블루스캔',
+                        usecols='B:E',
+                        parse_dates=['기사날짜'])
 
-asset_count = asset_df['기사날짜'].value_counts(dropna = False)
-scan_count = scan_df['기사날짜'].value_counts(dropna = False)
+asset_count = asset_df['기사날짜'].value_counts(dropna=False)
+scan_count = scan_df['기사날짜'].value_counts(dropna=False)
 new_df = pd.merge(trend_df, asset_count, how='outer', left_on='날짜', right_index=True)
 new_df = pd.merge(new_df, scan_count, how='outer', left_on='날짜', right_index=True)
 new_df.columns = ['날짜', '블루에셋검색추이', '블루스캔검색추이', '블루에셋언론기사건수', '블루스캔언론기사건수']
 new_df.fillna(0, inplace=True)
 
-new_df.to_excel('c:/Users/Administrator/Desktop/에스원_동향2.xlsx',
-            sheet_name='취합')
+new_df.to_excel('c:/Users/Administrator/Desktop/에스원_동향2.xlsx', sheet_name='취합')
 
 # # 시각화 ------------------
 fig = plt.figure(figsize=(15, 10))
@@ -162,26 +165,26 @@ ax4 = fig.add_subplot(224)
 
 ax1.plot(new_df['날짜'], new_df['블루에셋검색추이'], color='blue')
 ax1.set_ylabel('네이버 트랜드 추이(%)')
-ax1.set_xlim(new_df['날짜'].min()-pd.Timedelta(days=5), new_df['날짜'].max()+pd.Timedelta(days=5))
+ax1.set_xlim(new_df['날짜'].min() - pd.Timedelta(days=5), new_df['날짜'].max() + pd.Timedelta(days=5))
 ax1.set_ylim(0, 100)
 ax1.grid(True)
 ax1.set_title('블루에셋 네이버 검색추이')
 
 ax2.plot(new_df['날짜'], new_df['블루스캔검색추이'], color='magenta')
-ax2.set_xlim(new_df['날짜'].min()-pd.Timedelta(days=5), new_df['날짜'].max()+pd.Timedelta(days=5))
+ax2.set_xlim(new_df['날짜'].min() - pd.Timedelta(days=5), new_df['날짜'].max() + pd.Timedelta(days=5))
 ax2.set_ylim(0, 100)
 ax2.grid(True)
 ax2.set_title('블루스캔 네이버 검색추이')
 
 ax3.bar(new_df['날짜'], new_df['블루에셋언론기사건수'], color='blue', width=2)
 ax3.set_ylabel('기사건수(개)')
-ax3.set_xlim(new_df['날짜'].min()-pd.Timedelta(days=5), new_df['날짜'].max()+pd.Timedelta(days=5))
+ax3.set_xlim(new_df['날짜'].min() - pd.Timedelta(days=5), new_df['날짜'].max() + pd.Timedelta(days=5))
 ax3.set_ylim(0, 30)
 ax3.grid(True)
 ax3.set_title('블루에셋 언론기사건수')
 
 ax4.bar(new_df['날짜'], new_df['블루스캔언론기사건수'], color='magenta', width=2)
-ax4.set_xlim(new_df['날짜'].min()-pd.Timedelta(days=5), new_df['날짜'].max()+pd.Timedelta(days=5))
+ax4.set_xlim(new_df['날짜'].min() - pd.Timedelta(days=5), new_df['날짜'].max() + pd.Timedelta(days=5))
 ax4.set_ylim(0, 30)
 ax4.grid(True)
 ax4.set_title('블루스캔 언론기사건수')

@@ -280,7 +280,7 @@ for i in range(1, 10):
 # 다중 루프: 직각 이등변 삼각형2
 print("오른쪽 아래가 직각이등변 삼각형을 출력합니다")
 for i in range(1, 10):
-    for j in range(1, 10+1-i):   # hint. 공백과 *의 개수를 합하면 n
+    for j in range(1, 10 + 1 - i):   # hint. 공백과 *의 개수를 합하면 n
         print(' ', end='')
     for j in range(1, i + 1):
         print('*', end='')
@@ -336,9 +336,9 @@ list03 = [1, 2, 3, ]
 
 list04 = list()              # 빈리스트
 list05 = list('str')
-list06 = list([1, 2, 3,])
-list07 = list((1, 2, 3,))
-list08 = list({1, 2, 3,})
+list06 = list([1, 2, 3, ])
+list07 = list((1, 2, 3, ))
+list08 = list({1, 2, 3, })
 list09 = list(range(3, 8))
 
 # 튜플과 내장함수 tuple() 기초
@@ -351,8 +351,8 @@ tuple06 = 1, 2, 3,
 
 tuple07 = tuple()              # 빈튜플
 tuple08 = tuple('str')
-tuple09 = tuple([1, 2, 3,])
-tuple10 = tuple({1, 2, 3,})
+tuple09 = tuple([1, 2, 3, ])
+tuple10 = tuple({1, 2, 3, })
 tuple11 = tuple(range(3, 8))
 
 # 언팩
@@ -372,13 +372,13 @@ s[3:1]  # !! i, j가 len(s)보다 크면 len(s)로 간주, i가 없으면 0로 �
 # 응용
 x = 6
 y = 2
-x, y = y+2, x+3  # !! 동시 수행으로 x는 6으로 진행
+x, y = y + 2, x + 3  # !! 동시 수행으로 x는 6으로 진행
 print(x, y)
 
 x = 6
 y = 2
-x = y+2
-y = x+3  # 순차 수행으로 x는 4로 진행
+x = y + 2
+y = x + 3  # 순차 수행으로 x는 4로 진행
 print(x, y)
 
 # 배열의 등가관계
@@ -405,6 +405,7 @@ def max_of(a: Sequence) -> Any:
         if a[i] > maximum:
             maximum = a[i]
     return maximum
+
 
 # 파이썬에서는 하나의 스크립트프로그램을 모듈이라 칭하며 확장자를 제외한 파일명이 모듈명이다
 # 모듈이 직접 수행될 때 '변수__name__' 은 '__main__'이다
@@ -463,8 +464,8 @@ from typing import Any, MutableSequence
 
 def reverse_array(a: MutableSequence) -> None:
     n = len(a)
-    for i in range(n//2):
-        a[i], a[n-i-1] = a[n-i-1], a[i]
+    for i in range(n // 2):
+        a[i], a[n - i - 1] = a[n - i - 1], a[i]
 
 
 if __name__ == '__main__':
@@ -489,6 +490,7 @@ y = list(reversed(x))  # x의 원소를 역순으로 꺼내서 새로운 리스�
 # 10진수 정수를 n진수로 변환하려면 정수를 n으로 나눈 나머지를 구하는 동시에
 # 몫이 0이 될때까지 나누기를 반복한 후 나머지를 역순으로 늘어 놓는다
 
+
 # Do it! 실습 2-7 [A] 10진수 정수값을 입력받아 2~36진수로 변환하여 출력하기
 def card_conv(x: int, r: int) -> str:
     """정수 x를 r 진수로 변환한 뒤 그 수를 나타내는 문자열을 반환"""
@@ -499,25 +501,27 @@ def card_conv(x: int, r: int) -> str:
         x //= r
     return d[::-1]         # 역순으로 반환
 
+
 if __name__ == '__main__':
     print('10진수를 n진수로 변환합니다.')
 
     while True:
-        while True :  # 음이 아닌 정수를 입력받음
+        while True:  # 음이 아닌 정수를 입력받음
             no = int(input('변환할 값으로 음이 아닌 정수를 입력하세요.: '))
             if no > 0:
                 break
 
-        while True :  # 2~36진수의 정수값을 입력받음
+        while True:  # 2~36진수의 정수값을 입력받음
             cd = int(input('어떤 진수로 변환할까요?: '))
-            if 2 <=  cd <=  36:
+            if 2 <= cd <= 36:
                 break
 
         print(f'{cd}진수로는 {card_conv(no, cd)}입니다.')
 
-        retry = input( "한 번 더 변환할까요?(Y ... 예/N ... 아니오): ")
+        retry = input("한 번 더 변환할까요?(Y ... 예/N ... 아니오): ")
         if retry in {'N', 'n'}:
-           break
+            break
+
 
 # Do it! 실습 2-7 [A] 수정: 식으로 출력하기
 def card_conv(x: int, r: int) -> str:
@@ -528,8 +532,8 @@ def card_conv(x: int, r: int) -> str:
 
     print(f'{r:2} | {x:>{n}d}')
     while x > 0:
-        print('   +' + (n+2) * '-')
-        if x//r:
+        print('   +' + (n + 2) * '-')
+        if x // r:
             print(f'{r:2} | {x // r:>{n}d} ... {x % r}')
         else:
             print(f'     {x // r:>{n}d} ... {x % r}')
@@ -537,29 +541,31 @@ def card_conv(x: int, r: int) -> str:
         x //= r
     return d[::-1]         # 역순으로 반환
 
+
 if __name__ == '__main__':
     print('10진수를 n진수로 변환합니다.')
 
     while True:
-        while True :  # 음이 아닌 정수를 입력받음
+        while True:  # 음이 아닌 정수를 입력받음
             no = int(input('변환할 값으로 음이 아닌 정수를 입력하세요.: '))
             if no > 0:
                 break
 
-        while True :  # 2~36진수의 정수값을 입력받음
+        while True:  # 2~36진수의 정수값을 입력받음
             cd = int(input('어떤 진수로 변환할까요?: '))
-            if 2 <=  cd <=  36:
+            if 2 <= cd <= 36:
                 break
 
         print(f'{cd}진수로는 {card_conv(no, cd)}입니다.')
 
-        retry = input( "한 번 더 변환할까요?(Y ... 예/N ... 아니오): ")
+        retry = input("한 번 더 변환할까요?(Y ... 예/N ... 아니오): ")
         if retry in {'N', 'n'}:
-           break
+            break
 
 # !! 함수로 전달되는 매개변수 자료형에 따라서 달라지는 영향----------
 # 함수에서 이뮤터블형의 매개변수를 변경하면 원래 매개변수값에는 영향없다
 # 함수에서 뮤터블형의 매개변수를 변경하면 원래 매개변수값도 바뀐다
+
 
 # 이뮤터블형 매개변수
 def sum_1ton(n):
@@ -576,10 +582,12 @@ print(f'1부터 {x}까지 합은 {sum_1ton(x)}입니다.')
 
 print(x)
 
+
 # 뮤터블형 매개변수
 def change(lst, idx, val):
     """lst[idx]의 값을 val로 업데이트"""
-    lst [idx] = val
+    lst[idx] = val
+
 
 x = [11, 22, 33, 44, 55]
 print('x =', x)
@@ -596,10 +604,10 @@ print(x)
 
 # 소수는 1과 자기자신(n) 이외에는 나누어 떨어지지 않음
 counter = 0
-for n in range(2,1001):   # 1000 이하의 소수 구하기
-    for i in range(2,n):  # 2 부터 최대 999까지 나누어 보기
+for n in range(2, 1001):   # 1000 이하의 소수 구하기
+    for i in range(2, n):  # 2 부터 최대 999까지 나누어 보기
         counter += 1
-        if n%i == 0:
+        if n % i == 0:
             break
     else:
         print(n)
@@ -611,8 +619,8 @@ ptr = 0
 prime = [None] * 500      # 찾은 소수를 저장할 배열
 prime[ptr] = 2            # 2는 소수이므로 초기값으로 지정
 ptr += 1
-for n in range(3,1001,2):   # 홀수만을 대상으로 설정
-    for i in range(1,ptr):  # 이미 찾은 소수로 나누기(n이 홀수이므로 prime[0]의 2로 나눌필요가 없어서 1부터 시작)
+for n in range(3, 1001, 2):   # 홀수만을 대상으로 설정
+    for i in range(1, ptr):  # 이미 찾은 소수로 나누기(n이 홀수이므로 prime[0]의 2로 나눌필요가 없어서 1부터 시작)
         counter += 1
         if n % prime[i] == 0:
             break
@@ -760,6 +768,7 @@ def seq_search(seq: Sequence, key: Any) -> int:
 # [Do it! 실습 3-3] 이진 검색 알고리즘
 from typing import Any, Sequence
 
+
 def bin_search(a: Sequence, key: Any) -> int:
     """시퀀스 a에서 key와 일치하는 원소를 이진 검색"""
     pl = 0                   # 검색 범위 맨 앞 원소의 인덱스
@@ -777,6 +786,7 @@ def bin_search(a: Sequence, key: Any) -> int:
             break
     return -1
 
+
 if __name__ == '__main__':
     num = int(input('원소 수를 입력하세요.: '))
     x = [None] * num
@@ -786,7 +796,7 @@ if __name__ == '__main__':
         while True:
             x[i] = int(input(f'x[{i}]: '))
             if x[i] >= x[i - 1]:
-                 break
+                break
     ky = int(input('검색할 값을 입력하세요.: '))
     idx = bin_search(x, ky)                     # ky와 같은 값의 원소를 x에서 검색
     if idx < 0:
@@ -846,7 +856,7 @@ if __name__ == '__main__':
         while True:
             x[i] = int(input(f'x[{i}]: '))
             if x[i] >= x[i - 1]:
-                 break
+                break
     ky = int(input('검색할 값을 입력하세요.: '))
     idx = bin_search(x, ky)                     # ky와 같은 값의 원소를 x에서 검색
     if idx < 0:
@@ -871,15 +881,17 @@ from __future__ import annotations
 from typing import Any, Type
 import hashlib
 
+
 # 노드 클래스 만들기
 class Node:
     """해시를 구성하는 노드"""
 
     def __init__(self, key: Any, value: Any, next: Node) -> None:
         """초기화"""
-        self.key   = key    # 키
+        self.key = key    # 키
         self.value = value  # 값
-        self.next  = next   # 뒤쪽 노드를 참조
+        self.next = next   # 뒤쪽 노드를 참조
+
 
 # 해시 클래스 만들기
 class ChainedHash:
@@ -908,7 +920,7 @@ class ChainedHash:
 
         while p is not None:
             if p.key == key:
-                 return p.value  # 검색 성공
+                return p.value   # 검색 성공
             p = p.next           # 뒤쪽 노드를 주목
 
         return None              # 검색 실패
@@ -958,20 +970,23 @@ class ChainedHash:
             print()
 # chained_hash.py 파일의 끝 =====
 
+
 # [Do it! 실습 3-6] 체인법을 구현하는 해시 클래스 ChainedHash의 사용
 from enum import Enum
 from chained_hash import ChainedHash
 
 Menu = Enum('Menu', ['추가', '삭제', '검색', '덤프', '종료'])  # 메뉴를 선언
 
+
 def select_menu() -> Menu:
     """메뉴 선택"""
     s = [f'({m.value}){m.name}' for m in Menu]
     while True:
-        print(*s, sep = '   ', end='')
+        print(*s, sep='   ', end='')
         n = int(input(': '))
-        if 1 <=  n <=  len(Menu):
+        if 1 <= n <= len(Menu):
             return Menu(n)
+
 
 hash = ChainedHash(13)     # 크기가 13인 해시 테이블을 생성
 
@@ -1013,17 +1028,19 @@ from typing import Any, Type
 from enum import Enum
 import hashlib
 
+
 # 버킷의 속성
 class Status(Enum):
     OCCUPIED = 0  # 데이터를 저장
     EMPTY = 1     # 비어 있음
     DELETED = 2   # 삭제 완료
 
+
 class Bucket:
     """해시를 구성하는 버킷"""
 
     def __init__(self, key: Any = None, value: Any = None,
-                       stat: Status = Status.EMPTY) -> None:
+                 stat: Status = Status.EMPTY) -> None:
         """초기화"""
         self.key = key      # 키
         self.value = value  # 값
@@ -1039,6 +1056,7 @@ class Bucket:
         """속성을 설정"""
         self.stat = stat
 
+
 class OpenHash:
     """오픈 주소법을 구현하는 해시 클래스"""
 
@@ -1052,7 +1070,7 @@ class OpenHash:
         if isinstance(key, int):
             return key % self.capacity
         return(int(hashlib.md5(str(key).encode()).hexdigest(), 16)
-                % self.capacity)
+               % self.capacity)
 
     # 해시값에 1을 더하여 재해시한 식으로 새로운 해시값을 구함
     def rehash_value(self, key: Any) -> int:
@@ -1116,20 +1134,23 @@ class OpenHash:
                 print('-- 삭제 완료 --')
 # # opem_hash.py 끝 =====
 
+
 # [Do it! 실습 3-8] 오픈 주소법을 구현하는 해시 클래스 OpenHash 사용
 from enum import Enum
 from open_hash import OpenHash
 
 Menu = Enum('Menu', ['추가', '삭제', '검색', '덤프', '종료'])
 
+
 def select_menu() -> Menu:
     """메뉴 선택"""
     s = [f'({m.value}){m.name}' for m in Menu]
     while True:
-        print(*s, sep = '  ', end='')
+        print(*s, sep='  ', end='')
         n = int(input(': '))
-        if 1 <=  n <= len(Menu):
+        if 1 <= n <= len(Menu):
             return Menu(n)
+
 
 hash = OpenHash(13)  # 크기가 13인 해시 테이블 생성
 
@@ -1172,6 +1193,7 @@ while True:
 # fixed_stack.py 저장 =====
 from typing import Any
 
+
 class FixedStack:
     """고정 길이 스택 클래스"""
 
@@ -1213,7 +1235,7 @@ class FixedStack:
     def pop(self) -> Any:
         """꼭대기 데이터를 꺼내는 팝"""
         if self.is_empty():             # 스택이 비어 있음
-             raise FixedStack.Empty
+            raise FixedStack.Empty
         self.ptr -= 1
         return self.stk[self.ptr]
 
@@ -1257,20 +1279,23 @@ class FixedStack:
             print(self.stk[:self.ptr])
 # fixed_stack.py 끝 =====
 
+
 # [Do it! 실습 4-2] 고정 길이 스택 FixedStack의 사용하기
 from enum import Enum
 from fixed_stack import FixedStack
 
 Menu = Enum('Menu', ['푸시', '팝', '피크', '검색', '덤프', '종료'])
 
+
 def select_menu() -> Menu:
     """메뉴 선택"""
     s = [f'({m.value}){m.name}' for m in Menu]
     while True:
-        print(*s, sep = '   ', end='')
+        print(*s, sep='   ', end='')
         n = int(input(': '))
         if 1 <= n <= len(Menu):
             return Menu(n)
+
 
 s = FixedStack(64)  # 최대 64개를 푸시할 수 있는 스택
 
@@ -1315,6 +1340,7 @@ while True:
 # # stack.py: 표준라이브러리(collections.deque)를 사용 저장 =====
 from typing import Any
 from collections import deque
+
 
 class Stack:
     """고정 길이 스택 클래스(collections.deque를 사용)"""
@@ -1372,11 +1398,13 @@ class Stack:
         print(list(self.__stk))
 # # stack.py 끝=====
 
+
 # [Do it! 4C-1] 고정 길이 스택 클래스(collections.deque)를 사용하기
 from enum import Enum
 from stack import Stack
 
 Menu = Enum('Menu', ['푸시', '팝', '피크', '검색', '덤프', '종료'])
+
 
 def select_menu() -> Menu:
     """메뉴 선택"""
@@ -1386,6 +1414,7 @@ def select_menu() -> Menu:
         n = int(input('：'))
         if 1 <= n <= len(Menu):
             return Menu(n)
+
 
 s = Stack(64)  # 최대 64 개를 푸시할 수 있는 스택
 
@@ -1405,14 +1434,14 @@ while True:
             x = s.pop()
             print(f'팝한 데이터는 {x}입니다.')
         except IndexError:
-           print('스택이 비어 있습니다.')
+            print('스택이 비어 있습니다.')
 
     elif menu == Menu.피크:  # 피크
         try:
             x = s.peek()
             print(f'피크한 데이터는 {x}입니다.')
         except IndexError:
-           print('스택이 비어 있습니다.')
+            print('스택이 비어 있습니다.')
 
     elif menu == Menu.검색:  # 검색
         x = int(input('검색 값을 입력하세요：'))
@@ -1437,6 +1466,7 @@ while True:
 
 # 고정 길이 큐 클래스 fixed_queue.py 저장 =====
 from typing import Any
+
 
 class FixedQueue:
 
@@ -1530,11 +1560,13 @@ class FixedQueue:
             print()
 # fixed_queue.py 끝 =====
 
+
 # [Do it! 실습 4-4] 고정 길이 큐 클래스(FixedQueue)를 사용하기
 from enum import Enum
 from fixed_queue import FixedQueue
 
 Menu = Enum('Menu', ['인큐', '디큐', '피크', '검색', '덤프', '종료'])
+
 
 def select_menu() -> Menu:
     """메뉴 선택"""
@@ -1544,6 +1576,7 @@ def select_menu() -> Menu:
         n = int(input(': '))
         if 1 <= n <= len(Menu):
             return Menu(n)
+
 
 q = FixedQueue(64)  # 최대 64개를 인큐할 수 있는 큐 생성(고정 길이)
 
@@ -1600,7 +1633,8 @@ while True:
         break
 
 i = cnt - n
-if i < 0: i = 0
+if i < 0:
+    i = 0
 
 while i < cnt:
     print(f'{i + 1}번째 = {a[i % n]}')  # %연산자를 사용하여 마지막 남은 값의 인덱스 순서대로 출력
@@ -1616,6 +1650,7 @@ while i < cnt:
 
 # # 재귀 알로리즘의 기본: 자기 자신을 사용하여 정의 ----------
 
+
 # [Do it! 실습 5-1] 양의 정수인 팩토리얼 구하기
 def factorial(n: int) -> int:
     """양의 정수 n의 팩토리얼을 구하는 과정"""
@@ -1624,9 +1659,11 @@ def factorial(n: int) -> int:
     else:
         return 1
 
+
 if __name__ == '__main__':
     n = int(input('출력할 팩토리얼 값을 입력하세요.: '))
     print(f'{n}의 팩토리얼은 {factorial(n)}입니다.')
+
 
 # [Do it! 실습 5-2] 유클리드 호제법으로 최대 공약수 구하기
 def gcd(x: int, y: int) -> int:
@@ -1635,6 +1672,7 @@ def gcd(x: int, y: int) -> int:
         return x
     else:
         return gcd(y, x % y)
+
 
 if __name__ == '__main__':
     print('두 정숫값의 최대 공약수를 구합니다.')
@@ -1647,6 +1685,7 @@ if __name__ == '__main__':
 
 # 하향식과 상향식 분석 방법이 존재
 
+
 # [Do it! 실습 5-3] 순수한 재귀 함수 구현하기
 def recur(n: int) -> int:
     """순수한 재귀 함수 recur의 구현"""
@@ -1655,8 +1694,10 @@ def recur(n: int) -> int:
         print(n)
         recur(n - 2)
 
+
 x = int(input('정숫값을 입력하세요.: '))
 recur(x)
+
 
 # [Do it! 실습 5-4] 재귀 함수의 구현(꼬리 재귀를 제거)
 def recur(n: int) -> int:
@@ -1666,11 +1707,13 @@ def recur(n: int) -> int:
         print(n)
         n = n - 2
 
+
 x = int(input('정수값을 입력하세요.: '))
 recur(x)
 
 # [Do it! 실습 5-5] 스택으로 재귀 함수 구현하기(재귀를 제거)
 from stack import Stack  # stack.py의 Stack 클래스를 임포트
+
 
 def recur(n: int) -> int:
     """재귀를 제거한 함수 recur"""
@@ -1688,6 +1731,7 @@ def recur(n: int) -> int:
             continue
         break                 # while문 종료
 
+
 x = int(input('정수값을 입력하세요.: '))
 recur(x)
 
@@ -1696,6 +1740,7 @@ recur(x)
 # [1] 마지막원반을 제외한 상단원반들을 시작기둥(1)에서 중간기둥(2)으로 이동
 # [2] 마지막원반을 시작기둥(1)에서 마지막기둥(3)으로 이동
 # [3] 중간기둥의 원반들을 중간기둥(2)에서 마지막기둥(3)으로 이동
+
 
 # [Do it! 실습 5-6] 하노이의 탑 구현하기
 def move(no: int, x: int, y: int) -> None:
@@ -1707,6 +1752,7 @@ def move(no: int, x: int, y: int) -> None:
 
     if no > 1:                         # [3]과정
         move(no - 1, 6 - x - y, y)
+
 
 print('하노이의 탑을 구현하는 프로그램입니다.')
 n = int(input('원반의 개수를 입력하세요.: '))
@@ -1724,20 +1770,23 @@ move(n, 1, 3)
 # [규칙1] 각 열에 1개 퀸을 배치한 조합을 재귀적으로 나열하기
 pos = [0] * 8  # 각 열에서 퀸의 위치를 출력
 
+
 def put() -> None:
     """각 열에 배치한 퀸의 위치를 출력"""
     for i in range(8):
         print(f'{pos[i]:2}', end='')
     print()
 
+
 def set(i: int) -> None:
     """i 열에 퀸을 배치"""
     for j in range(8):
         pos[i] = j   # 퀸을 'i열j행'에 배치
-        if i == 7 :  # 모든 열에 배치를 종료
+        if i == 7:  # 모든 열에 배치를 종료
             put()
         else:
             set(i + 1)  # 다음 열에 퀸을 배치(재귀호출)
+
 
 set(0)  # 0 열에 퀸을 배치
 
@@ -1745,11 +1794,13 @@ set(0)  # 0 열에 퀸을 배치
 pos = [0] * 8       # 각 열에서 퀸의 위치
 flag = [False] * 8  # 각 행에 퀸을 배치했는지 체크
 
+
 def put() -> None:
     """각 열에 놓은 퀸의 위치를 출력"""
     for i in range(8):
         print(f'{pos[i]:2}', end='')
     print()
+
 
 def set(i: int) -> None:
     """i 열의 알맞은 위치에 퀸을 배치"""
@@ -1763,6 +1814,7 @@ def set(i: int) -> None:
                 set(i + 1)       # 다음 열에 퀸을 배치
                 flag[j] = False  # flag를 false로 초기화
 
+
 set(0)  # 0열에 퀸을 배치
 
 # [+규칙3] 8퀸 문제 알고리즘 구현하기(퀸을 놓는 상황을 네모로 표시)
@@ -1770,6 +1822,7 @@ pos = [0] * 8          # 각 열에 배치한 퀸의 위치
 flag_a = [False] * 8   # 각 행에 퀸을 배치했는지 체크
 flag_b = [False] * 15  # 대각선 방향(↙↗)으로 퀸을 배치했는지 체크
 flag_c = [False] * 15  # 대각선 방향( ↘↖)으로 퀸을 배치했는지 체크
+
 
 def put() -> None:
     """퀸을 놓는 상황을 □와 ■로 출력"""
@@ -1779,12 +1832,13 @@ def put() -> None:
         print()
     print()
 
+
 def set(i: int) -> None:
     """i 열의 알맞은 위치에 퀸을 놓기"""
     for j in range(8):
-        if(     not flag_a[j]           # j 행에 아직 퀸을 놓지 않았으면
-            and not flag_b[i + j]       # 대각선 방향(↙↗)으로 퀸이 배치 되지 않았다면(대각선의 인덱스x+y합이 동일함 활용)
-            and not flag_c[i - j + 7]): # 대각선 방향( ↘↖)으로 퀸이 배치 되지 않았다면(대각선의 인덱스x-y+7의 값과 동일함 활용)
+        if(not flag_a[j] and not    # j 행에 아직 퀸을 놓지 않았으면
+           flag_b[i + j] and not    # 대각선 방향(↙↗)으로 퀸이 배치 되지 않았다면(대각선의 인덱스x+y합이 동일함 활용)
+           flag_c[i - j + 7]):  # 대각선 방향( ↘↖)으로 퀸이 배치 되지 않았다면(대각선의 인덱스x-y+7의 값과 동일함 활용)
             pos[i] = j          # 퀸을 j 행에 놓기
             if i == 7:          # 모든 열에 퀸을 배치하는 것을 완료
                 put()
@@ -1792,6 +1846,7 @@ def set(i: int) -> None:
                 flag_a[j] = flag_b[i + j] = flag_c[i - j + 7] = True
                 set(i + 1)      # 다음 열에 퀸을 놓기
                 flag_a[j] = flag_b[i + j] = flag_c[i - j + 7] = False
+
 
 set(0)          # 0 열에 퀸을 놓기
 
@@ -1805,6 +1860,7 @@ set(0)          # 0 열에 퀸을 놓기
 # [Do it! 실습 6-1] 버블 정렬 알고리즘: 이웃한 원소의 대소를 패스(비교&교환)반복
 from typing import MutableSequence
 
+
 def bubble_sort(a: MutableSequence) -> None:
     """버블 정렬"""
     n = len(a)
@@ -1812,6 +1868,7 @@ def bubble_sort(a: MutableSequence) -> None:
         for j in range(n - 1, i, -1):  # 배열의 뒤부터 패스(비교,교환) 진행
             if a[j - 1] > a[j]:
                 a[j - 1], a[j] = a[j], a[j - 1]
+
 
 if __name__ == '__main__':
     print('버블 정렬을 수행합니다.')
@@ -1830,6 +1887,7 @@ if __name__ == '__main__':
 # [Do it! 실습 6-2] 버블 정렬 알고리즘 구현하기(정렬과정 상세출력 코드추가)
 from typing import MutableSequence
 
+
 def bubble_sort_verbose(a: MutableSequence) -> None:
     """버블 정렬(정렬 과정을 출력)"""
     ccnt = 0  # 비교 횟수
@@ -1839,19 +1897,20 @@ def bubble_sort_verbose(a: MutableSequence) -> None:
         print(f'패스 {i + 1}')
         for j in range(n - 1, i, -1):
             for m in range(0, n - 1):
-               print(f'{a[m]:2}' + ('  ' if m != j - 1 else
-                                    ' +' if a[j - 1] > a[j] else ' -'),  # +교환, -스테이
-                                    end='')
+                print(f'{a[m]:2}' + ('  ' if m != j - 1 else
+                                     ' +' if a[j - 1] > a[j] else ' -'),  # +교환, -스테이
+                      end='')
             print(f'{a[n - 1]:2}')
             ccnt += 1
             if a[j - 1] > a[j]:
                 scnt += 1
                 a[j - 1], a[j] = a[j], a[j - 1]
         for m in range(0, n - 1):
-           print(f'{a[m]:2}', end='  ')
+            print(f'{a[m]:2}', end='  ')
         print(f'{a[n - 1]:2}')
     print(f'비교를 {ccnt}번 했습니다.')
     print(f'교환을 {scnt}번 했습니다.')
+
 
 if __name__ == '__main__':
     print('버블 정렬을 수행합니다.')
@@ -1870,6 +1929,7 @@ if __name__ == '__main__':
 # [개선1: 중단점삽입] 교환횟수가 0이면 배열 정렬완료로 간주(비교횟수 감소효과)
 from typing import MutableSequence
 
+
 def bubble_sort(a: MutableSequence) -> None:
     """버블 정렬(교환 횟수에 따른 중단)"""
     n = len(a)
@@ -1881,6 +1941,7 @@ def bubble_sort(a: MutableSequence) -> None:
                 exchng += 1
         if exchng == 0:
             break
+
 
 if __name__ == '__main__':
     print('버블 정렬을 합니다.')
@@ -1899,6 +1960,7 @@ if __name__ == '__main__':
 # [개선2: 스캔범위축소] 특정원소이후 교환이벤트가 없으면 그 원소 앞쪽은 정렬완료로 간주
 from typing import MutableSequence
 
+
 def bubble_sort3_verbose(a: MutableSequence) -> None:
     """버블 정렬(스캔 범위를 제한)"""
     ccnt = 0  # 비교 횟수
@@ -1912,9 +1974,9 @@ def bubble_sort3_verbose(a: MutableSequence) -> None:
         last = n - 1  # 마지막으로 교환된 두원소의 오른쪽 원소의 인덱스를 저장
         for j in range(n - 1, k, -1):
             for m in range(0, n - 1):
-               print(f'{a[m]:2}' + ('  ' if m != j - 1 else
-                                    ' +' if a[j - 1] > a[j] else ' -'),
-                     end='')
+                print(f'{a[m]:2}' + ('  ' if m != j - 1 else
+                                     ' +' if a[j - 1] > a[j] else ' -'),
+                      end='')
             print(f'{a[n - 1]:2}')
             ccnt += 1
             if a[j - 1] > a[j]:
@@ -1923,10 +1985,11 @@ def bubble_sort3_verbose(a: MutableSequence) -> None:
                 last = j
         k = last     # 다음에 수행할 패스범위를 a[last]로 제한
         for m in range(0, n - 1):
-           print(f'{a[m]:2}', end='  ')
+            print(f'{a[m]:2}', end='  ')
         print(f'{a[n - 1]:2}')
     print(f'비교를 {ccnt}번 했습니다.')
     print(f'교환을 {scnt}번 했습니다.')
+
 
 if __name__ == '__main__':
     print('버블 정렬을 수행합니다')

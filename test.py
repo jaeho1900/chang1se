@@ -13,7 +13,7 @@ class WindowClass(QMainWindow, form_class):
         super().__init__()
         self.setupUi(self)
 
-        #버튼에 기능을 연결하는 코드
+        # 버튼에 기능을 연결하는 코드
         # self.btn_1.clicked.connect(self.button1Function)
         # self.btn_2.clicked.connect(self.button2Function)
         lcd = QLCDNumber(self)
@@ -23,12 +23,13 @@ class WindowClass(QMainWindow, form_class):
         vbox.addWidget(dial)
         self.setLayout(vbox)
         self.dial.valueChanged.connect(lcd.display)  # QLCDNumber와 QDial 연결
-    #btn_1이 눌리면 작동할 함수
-    def button1Function(self) :
+
+    # btn_1이 눌리면 작동할 함수
+    def button1Function(self):
         print("btn_1 Clicked")
 
-    #btn_2가 눌리면 작동할 함수
-    def button2Function(self) :
+    # btn_2가 눌리면 작동할 함수
+    def button2Function(self):
         print("btn_2 Clicked")
 
 
