@@ -1800,16 +1800,16 @@ set(0)          # 0 열에 퀸을 놓기
 # 6장. 정렬 알고리즘
 # -----------------------------------------
 
-# # 버블정렬
+# # 버블정렬(단순교환정렬)
 
-# [Do it! 실습 6-1] 버블 정렬 알고리즘 구현하기
+# [Do it! 실습 6-1] 버블 정렬 알고리즘: 이웃한 원소의 대소를 패스(비교&교환)반복
 from typing import MutableSequence
 
 def bubble_sort(a: MutableSequence) -> None:
     """버블 정렬"""
     n = len(a)
     for i in range(n - 1):             # n-1개의 정렬이 끝나면 마지막 원소는 이미 끝에 놓임
-        for j in range(n - 1, i, -1):  # 패스(비교,교환) 과정
+        for j in range(n - 1, i, -1):  # 배열의 뒤부터 패스(비교,교환) 진행
             if a[j - 1] > a[j]:
                 a[j - 1], a[j] = a[j], a[j - 1]
 
@@ -1840,7 +1840,7 @@ def bubble_sort_verbose(a: MutableSequence) -> None:
         for j in range(n - 1, i, -1):
             for m in range(0, n - 1):
                print(f'{a[m]:2}' + ('  ' if m != j - 1 else
-                                    ' +' if a[j - 1] > a[j] else ' -'),
+                                    ' +' if a[j - 1] > a[j] else ' -'),  # +교환, -스테이
                                     end='')
             print(f'{a[n - 1]:2}')
             ccnt += 1
@@ -1862,6 +1862,81 @@ if __name__ == '__main__':
         x[i] = int(input(f'x[{i}]: '))
 
     bubble_sort_verbose(x)  # 배열 x를 버블 정렬
+
+    print('오름차순으로 정렬했습니다.')
+    for i in range(num):
+        print(f'x[{i}] = {x[i]}')
+
+# [개선1: 중단점삽입] 교환횟수가 0이면 배열 정렬완료로 간주(비교횟수 감소효과)
+from typing import MutableSequence
+
+def bubble_sort(a: MutableSequence) -> None:
+    """버블 정렬(교환 횟수에 따른 중단)"""
+    n = len(a)
+    for i in range(n - 1):
+        exchng = 0        # 패스에서 교환 횟수 변수
+        for j in range(n - 1, i, -1):
+            if a[j - 1] > a[j]:
+                a[j - 1], a[j] = a[j], a[j - 1]
+                exchng += 1
+        if exchng == 0:
+            break
+
+if __name__ == '__main__':
+    print('버블 정렬을 합니다.')
+    num = int(input('원소 수를 입력하세요.: '))
+    x = [None] * num    # 원소 수 num인 배열을 생성
+
+    for i in range(num):
+        x[i] = int(input(f'x[{i}]: '))
+
+    bubble_sort(x)      # 배열 x를 버블 정렬
+
+    print('오름차순으로 정렬했습니다.')
+    for i in range(num):
+        print(f'x[{i}] = {x[i]}')
+
+# [개선2: 스캔범위축소] 특정원소이후 교환이벤트가 없으면 그 원소 앞쪽은 정렬완료로 간주
+from typing import MutableSequence
+
+def bubble_sort3_verbose(a: MutableSequence) -> None:
+    """버블 정렬(스캔 범위를 제한)"""
+    ccnt = 0  # 비교 횟수
+    scnt = 0  # 교환 횟수
+    n = len(a)
+    k = 0
+    i = 0
+    while k < n - 1:
+        print(f'패스 {i + 1}')
+        i += 1
+        last = n - 1  # 마지막으로 교환된 두원소의 오른쪽 원소의 인덱스를 저장
+        for j in range(n - 1, k, -1):
+            for m in range(0, n - 1):
+               print(f'{a[m]:2}' + ('  ' if m != j - 1 else
+                                    ' +' if a[j - 1] > a[j] else ' -'),
+                     end='')
+            print(f'{a[n - 1]:2}')
+            ccnt += 1
+            if a[j - 1] > a[j]:
+                scnt += 1
+                a[j - 1], a[j] = a[j], a[j - 1]
+                last = j
+        k = last     # 다음에 수행할 패스범위를 a[last]로 제한
+        for m in range(0, n - 1):
+           print(f'{a[m]:2}', end='  ')
+        print(f'{a[n - 1]:2}')
+    print(f'비교를 {ccnt}번 했습니다.')
+    print(f'교환을 {scnt}번 했습니다.')
+
+if __name__ == '__main__':
+    print('버블 정렬을 수행합니다')
+    num = int(input('원소 수를 입력하세요.: '))
+    x = [None] * num  # 원소 수 num인 배열을 생성
+
+    for i in range(num):
+        x[i] = int(input(f'x[{i}] : '))
+
+    bubble_sort3_verbose(x)  # 배열 x를 버블
 
     print('오름차순으로 정렬했습니다.')
     for i in range(num):
