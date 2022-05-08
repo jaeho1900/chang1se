@@ -2005,6 +2005,82 @@ if __name__ == '__main__':
     for i in range(num):
         print(f'x[{i}] = {x[i]}')
 
+
+# # 셰이커정렬(번갈아바꾸어정렬)
+
+# [Do it! 실습 6-5] 셰이커 정렬 알고리즘 구현하기(정렬 과정을 출력 포함)
+from typing import MutableSequence
+
+
+def shaker_sort(a: MutableSequence) -> None:
+    """셰이커 정렬"""
+    ccnt = 0    # 출력변수: 비교 횟수
+    scnt = 0    # 출력변수: 교환 횟수
+    n = len(a)  # 출력변수
+    left = 0
+    right = len(a) - 1
+    last = right
+    i = 0       # 출력변수
+    while left < right:
+        print(f'패스{i + 1}')  # 출력변수
+        i += 1                 # 출력변수
+        for j in range(right, left, -1):  # 맨뒤부터 앞으로 스캔
+
+            for m in range(0, n - 1):                                       # 출력변수-s
+                print(f'{a[m]:2}' + ('  ' if m != j - 1 else
+                                     ' +' if a[j - 1] > a[j] else ' -'), end='')
+            print(f'{a[n - 1]:2}')
+            ccnt += 1                                                       # 출력변수-e
+            if a[j - 1] > a[j]:
+                scnt += 1                                                   # 출력변수
+                a[j - 1], a[j] = a[j], a[j - 1]
+                last = j
+        left = last                       # 스캔범위의 첫 원소 인덱스
+
+        for m in range(0, n - 1):                                           # 출력변수-s
+            print(f'{a[m]:2}', end='  ')
+        print(f'{a[n - 1]:2}')                                              # 출력변수-e
+
+        if (left == right):
+            break
+        print(f'패스 {i + 1}')
+        i += 1
+
+        for j in range(left, right):      # 맨앞부터 뒤로 스캔
+
+            for m in range(0, n - 1):                                      # 출력변수-s
+               print(f'{a[m]:2}' + ('  ' if m != j else
+                                    ' +' if a[j] > a[j + 1] else ' -'), end='')
+            print(f'{a[n - 1]:2}')                                         # 출력변수-e
+
+
+            if a[j] > a[j + 1]:
+                scnt += 1                                                  # 출력변수
+                a[j], a[j + 1] = a[j + 1], a[j]
+                last = j
+        right = last                      # 스캔범위의 마지막 원소 인덱스
+
+        for m in range(0, n - 1):                                          # 출력변수-s
+           print(f'{a[m]:2}', end='  ')
+        print(f'{a[n - 1]:2}')
+    print(f'비교를 {ccnt}번 했습니다.')
+    print(f'교환을 {scnt}번 했습니다.')                                     # 출력변수-e
+
+
+if __name__ == '__main__':
+    print('셰이커 정렬을 수행합니다')
+    num = int(input('원소 수를 입력하세요.: '))
+    x = [None] * num    # 원소 수가 num인 배열을 생성
+
+    for i in range(num):
+        x[i] = int(input(f'x[{i}] : '))
+
+    shaker_sort(x)      # 배열 x를 단순 교환 정렬
+
+    print('오름차순으로 정렬했습니다.')
+    for i in range(num):
+        print(f'x[{i}] = {x[i]}')
+
 # -----------------------------------------
 # 7장. 문자열 검색
 # -----------------------------------------
