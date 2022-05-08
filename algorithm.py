@@ -2049,10 +2049,9 @@ def shaker_sort(a: MutableSequence) -> None:
         for j in range(left, right):      # 맨앞부터 뒤로 스캔
 
             for m in range(0, n - 1):                                      # 출력변수-s
-               print(f'{a[m]:2}' + ('  ' if m != j else
-                                    ' +' if a[j] > a[j + 1] else ' -'), end='')
+                print(f'{a[m]:2}' + ('  ' if m != j else
+                                     ' +' if a[j] > a[j + 1] else ' -'), end='')
             print(f'{a[n - 1]:2}')                                         # 출력변수-e
-
 
             if a[j] > a[j + 1]:
                 scnt += 1                                                  # 출력변수
@@ -2061,7 +2060,7 @@ def shaker_sort(a: MutableSequence) -> None:
         right = last                      # 스캔범위의 마지막 원소 인덱스
 
         for m in range(0, n - 1):                                          # 출력변수-s
-           print(f'{a[m]:2}', end='  ')
+            print(f'{a[m]:2}', end='  ')
         print(f'{a[n - 1]:2}')
     print(f'비교를 {ccnt}번 했습니다.')
     print(f'교환을 {scnt}번 했습니다.')                                     # 출력변수-e
