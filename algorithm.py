@@ -1855,7 +1855,10 @@ set(0)          # 0 열에 퀸을 놓기
 # 6장. 정렬 알고리즘
 # -----------------------------------------
 
-# # 버블정렬(단순교환정렬)
+# 정렬 알고리즘의 핵심은 교환, 선택, 삽입입니다
+# 버블정렬, 단순선택정렬, 단순삽입정렬, 셀정렬, 퀵정렬, 병합정렬, 힙정렬, 도수정렬을 다룸
+
+# 1. 버블정렬(bubble sort, 단순교환정렬)
 
 # [Do it! 실습 6-1] 버블 정렬 알고리즘: 이웃한 원소의 대소를 패스(비교&교환)반복
 from typing import MutableSequence
@@ -2006,7 +2009,7 @@ if __name__ == '__main__':
         print(f'x[{i}] = {x[i]}')
 
 
-# # 셰이커정렬(번갈아바꾸어정렬)
+# 1-1. 셰이커정렬(번갈아바꾸어정렬)
 
 # [Do it! 실습 6-5] 셰이커 정렬 알고리즘 구현하기(정렬 과정을 출력 포함)
 from typing import MutableSequence
@@ -2079,6 +2082,47 @@ if __name__ == '__main__':
     print('오름차순으로 정렬했습니다.')
     for i in range(num):
         print(f'x[{i}] = {x[i]}')
+
+
+# 2. 단순선택정렬(straight selection sort, 작은 원소부터 알맞는 위치로 옮김)
+
+# [단계1] 아직 정렬되지 않은 부분의 가장 작은 원소(a[min])를 선택한다
+# [단계2] a[min]과 아직 정렬되지 않은 부분의 맨 앞의 원소와 교환한다
+
+# [Do it! 실습 6-6] 단순 선택 정렬 알고리즘 구현
+from typing import MutableSequence
+
+
+def selection_sort(a: MutableSequence) -> None:
+    """단순 선택 정렬"""
+    n = len(a)
+    for i in range(n - 1):
+        min = i  # 정렬 할 부분에서 가장 작은 원소의 인덱스
+        for j in range(i + 1, n):
+            if a[j] < a[min]:
+                min = j
+        a[i], a[min] = a[min], a[i]  # 정렬 할 부분에서 맨 앞의 원소와 가장 작은 원소를 교환
+
+
+if __name__ == '__main__':
+    print('단순 선택 정렬을 수행합니다.')
+    num = int(input('원소 수를 입력하세요.: '))
+    x = [None] * num  # 원소 수가 num인 배열을 생성
+
+    for i in range(num):
+        x[i] = int(input(f'x[{i}] : '))
+
+    selection_sort(x)  # 배열 x를 단순 선택 정렬
+
+    print('오름차순으로 정렬했습니다.')
+    for i in range(num):
+        print(f'x[{i}] = {x[i]}')
+
+# 2. 단순삽입정렬(straight insertion sort, 두번째 위치 원소부터 앞쪽에 삽입하여 옮김)
+
+# [종료조건1] 정렬된 배열의 왼쪽 끝에 도달한 경우 (계속조건1, j가 0보다 큰 경우)
+# [종료조건2] 이동하고픈 원소값보다 작거나 같은 원소를 발견한 경우 (계속조건2, a[j-1]이 원소값보다 큰 경우)
+
 
 # -----------------------------------------
 # 7장. 문자열 검색
