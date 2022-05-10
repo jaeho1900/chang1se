@@ -2123,6 +2123,91 @@ if __name__ == '__main__':
 # [종료조건1] 정렬된 배열의 왼쪽 끝에 도달한 경우 (계속조건1, j가 0보다 큰 경우)
 # [종료조건2] 이동하고픈 원소값보다 작거나 같은 원소를 발견한 경우 (계속조건2, a[j-1]이 원소값보다 큰 경우)
 
+# [Do it! 실습 6-7] 단순 삽입 정렬 알고리즘 구현하기
+from typing import MutableSequence
+
+
+def insertion_sort(a: MutableSequence) -> None:
+    """단순 삽입 정렬"""
+    n = len(a)
+    for i in range(1, n):
+        j = i
+        tmp = a[i]
+        while j > 0 and a[j - 1] > tmp:  # [계속조건1] and [계속조건2]
+            a[j] = a[j - 1]
+            j -= 1
+        a[j] = tmp
+
+
+if __name__ == '__main__':
+    print('단순 삽입 정렬을 수행합니다.')
+    num = int(input('원소 수를 입력하세요.: '))
+    x = [None] * num  # 원소 수가 num인 배열을 생성
+
+    for i in range(num):
+        x[i] = int(input(f'x[{i}]: '))
+
+    insertion_sort(x)  # 배열 x를 단순 삽입 정렬
+
+    print('오름차순으로 정렬했습니다.')
+    for i in range(num):
+        print(f'x[{i}] = {x[i]}')
+
+
+# 2-1. 이진삽입정렬(binary insertion sort)
+
+# [Do it! 실습 6C-2] 이진 삽입 정렬 알고리즘의 구현(bisect.insort 사용)
+from typing import MutableSequence
+
+
+# def binary_insertion_sort(a: MutableSequence) -> None:
+#     """이진 삽입 정렬"""
+#     n = len(a)
+#     for i in range(1, n):
+#         key = a[i]
+#         pl = 0                   # 검색 범위의 맨 앞 원소 인덱스
+#         pr = i - 1               # 검색 범위의 맨 끝 원소 인덱스
+
+#         while True:
+#             pc = (pl + pr) // 2  # 검색 범위의 중앙 원소 인덱스
+#             if a[pc] == key:     # 검색 성공
+#                 break
+#             elif a[pc] < key:
+#                 pl = pc + 1      # 검색 범위의 뒤쪽 절반으로 좁힘
+#             else:
+#                 pr = pc - 1      # 검색 범위의 앞쪽 절반으로 좁힘
+#             if pl > pr:
+#                 break
+
+#         pd = pc + 1 if pl <= pr else pr + 1  # 삽입할 위치의 인덱스
+
+#         for j in range(i, pd, -1):
+#             a[j] = a[j - 1]
+#         a[pd] = key
+
+# # 파이썬 표준 라이브러리 bisect 모듈 사용
+import bisect
+
+
+def binary_insertion_sort(a: MutableSequence) -> None:
+    """이진 삽입 정렬(bisect.insort을 사용)"""
+    for i in range(1, len(a)):
+        bisect.insort(a, a.pop(i), 0, i)
+
+
+if __name__ == '__main__':
+    print('이진 삽입 정렬을 수행합니다.')
+    num = int(input('원소 수를 입력하세요.: '))
+    x = [None] * num            # 원소 수가 num인 배열을 생성
+
+    for i in range(num):
+        x[i] = int(input(f'x[{i}]: '))
+
+    binary_insertion_sort(x)    # 배열 x를 이진 삽입 정렬
+
+    print('오름차순으로 정렬했습니다.')
+    for i in range(num):
+        print(f'x[{i}] = {x[i]}')
 
 # -----------------------------------------
 # 7장. 문자열 검색
