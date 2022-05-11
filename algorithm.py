@@ -2209,6 +2209,47 @@ if __name__ == '__main__':
     for i in range(num):
         print(f'x[{i}] = {x[i]}')
 
+# 3. 셀정렬(shell sort, 단순삽입정렬의 보완판)
+
+# h개 떨어진 원소끼리 정렬을 반복하고 마지막에 단순삽입정렬을 수행하여 정렬횟수는 늘지만 원소이동횟수가 줄어서 효율성 향상
+
+# [Do it! 실습 6-9] 셸 정렬 알고리즘 구현하기(h * 3 + 1의 수열 사용)
+from typing import MutableSequence
+
+
+def shell_sort(a: MutableSequence) -> None:
+    """셸 정렬(h * 3 + 1의 수열 사용)"""
+    n = len(a)
+    h = 1
+
+    while h < n // 9:                # h의 초기값이 지나치게 크면 비효율로 배열수를 9로 나눈 몫을 넘지 않도록 함
+        h = h * 3 + 1                # + 최적의 h값 구하는 산식
+
+    while h > 0:
+        for i in range(h, n):
+            j = i - h
+            tmp = a[i]
+            while j >= 0 and a[j] > tmp:
+                a[j + h] = a[j]
+                j -= h
+            a[j + h] = tmp
+        h //= 3                     # 반복할 때마다 h 감소하다가 최종적으로 1이 됨
+
+
+if __name__ == '__main__':
+    print('셸 정렬을 수행합니다(h * 3 + 1의 수열 사용).')
+    num = int(input('원소 수를 입력하세요.: '))
+    x = [None] * num  # 원소 수가 num인 배열을 생성
+
+    for i in range(num):
+        x[i] = int(input(f'x[{i}]: '))
+
+    shell_sort(x)  # 배열 x를 셸 정렬
+
+    print('오름차순으로 정렬했습니다.')
+    for i in range(num):
+        print(f'x[{i}] = {x[i]}')
+
 # -----------------------------------------
 # 7장. 문자열 검색
 # -----------------------------------------
