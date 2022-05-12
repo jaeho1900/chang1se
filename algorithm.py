@@ -2250,6 +2250,141 @@ if __name__ == '__main__':
     for i in range(num):
         print(f'x[{i}] = {x[i]}')
 
+# 4. 퀵정렬(quick sort)
+
+# 피벗(중심축)을 기준으로 작은 그룹과 큰 그룹으로 나누어서 최종적으로 모든 그룹이 1개 원소가 되면 종료
+
+# [Do it! 실습 6-10] 배열을 두 그룹으로 나누기
+from typing import MutableSequence
+
+
+def partition(a: MutableSequence) -> None:
+    """배열을 분할하여 출력"""
+    n = len(a)
+    pl = 0         # 왼쪽 커서
+    pr = n - 1     # 오른쪽 커서
+    x = a[n // 2]  # 피벗(가운데 원소)
+
+    while pl <= pr:
+        while a[pl] < x: pl += 1
+        while a[pr] > x: pr -= 1
+        if pl <= pr:
+            a[pl], a[pr] = a[pr], a[pl]
+            pl += 1
+            pr -= 1
+
+    print(f'피벗은 {x}입니다.')
+
+    print('피벗 이하인 그룹입니다.')
+    print(*a[0: pl])           # a[0] ~ a[pl - 1]
+
+    if pl > pr + 1:
+        print('피벗과 일치하는 그룹입니다.')
+        print(*a[pr + 1: pl])  # a[pr + 1] ~ a[pl - 1]
+
+    print('피벗 이상인 그룹입니다.')
+    print(*a[pr + 1: n])       # a[pr + 1] ~ a[n - 1]
+
+
+if __name__ == '__main__':
+    print('배열을 나눕니다.')
+    num = int(input('원소 수를 입력하세요.: '))
+    x = [None] * num    # 원소 수가 num인 배열을 생성
+
+    for i in range(num):
+        x[i] = int(input(f'x[{i}]: '))
+
+    partition(x)         # 배열 x를 나누어서 출력
+
+# [Do it! 실습 6-10] 퀵 정렬 알고리즘 구현: 원소가 2개 이상인 그룹을 재귀함수로 분류 반복하기
+from typing import MutableSequence
+
+
+def qsort(a: MutableSequence, left: int, right: int) -> None:
+    """a[left] ~ a[right]를 퀵 정렬"""
+    pl = left                   # 왼쪽 커서
+    pr = right                  # 오른쪽 커서
+    x = a[(left + right) // 2]  # 피벗(가운데 요소)
+
+    print(f'a[{left}] ~ a[{right}]: ', *a[left: right + 1])  # 과정 출력을 위한 추가된 부분(1줄)
+
+    while pl <= pr:    # 실습 6-10과 같은 while 문
+        while a[pl] < x: pl += 1
+        while a[pr] > x: pr -= 1
+        if pl <= pr:
+            a[pl], a[pr] = a[pr], a[pl]
+            pl += 1
+            pr -= 1
+
+    if left < pr: qsort(a, left, pr)     # 좌우 각 그룹을 다시 나누기 위한 재귀 호출 추가
+    if pl < right: qsort(a, pl, right)
+
+
+def quick_sort(a: MutableSequence) -> None:
+    """퀵 정렬"""
+    qsort(a, 0, len(a) - 1)
+
+
+if __name__ == '__main__':
+    print('퀵 정렬을 수행합니다.')
+    num = int(input('원소 수를 입력하세요.: '))
+    x = [None] * num   # 원소 수가 num인 배열을 생성
+
+    for i in range(num):
+        x[i] = int(input(f'x[{i}]: '))
+
+    quick_sort(x)      # 배열 x를 퀵 정렬
+
+    print('오름차순으로 정렬했습니다.')
+    for i in range(num):
+        print(f'x[{i}] = {x[i]}')
+
+# [Do it! 실습 6-12] 퀵 정렬 알고리즘 구현(비재귀적인 퀵 정렬)
+from stack import Stack                     # 실습 4C-1의 stack.py 파일 import
+from typing import MutableSequence
+
+
+def qsort(a: MutableSequence, left: int, right: int) -> None:
+    """a[left] ~ a [right]를 퀵 정렬(비재귀 버전)"""
+    range = Stack(right - left + 1)         # 스택 생성
+
+    range.push((left, right))               # 나눠야할 배열 범위의 맨앞과 맨뒤 원소 인덱스
+
+    while not range.is_empty():
+        pl, pr = left, right = range.pop()  # 왼쪽, 오른쪽 커서를 꺼냄
+        x = a[(left + right) // 2]          # 피벗(중앙 요소)
+
+        while pl <= pr:
+            while a[pl] < x: pl += 1
+            while a[pr] > x: pr -= 1
+            if pl <= pr:                        # 실습 6-10, 실습 6-11과 같음
+                a[pl], a[pr] = a[pr], a[pl]
+                pl += 1
+                pr -= 1
+
+        if left < pr: range.push((left, pr))    # 왼쪽 그룹의 커서를 저장
+        if pl < right: range.push((pl, right))  # 오른쪽 그룹의 커서를 저장
+
+
+def quick_sort(a: MutableSequence) -> None:
+    """퀵 정렬"""
+    qsort(a, 0, len(a) - 1)
+
+
+if __name__ == '__main__':
+    print('비재귀적인 퀵 정렬')
+    num = int(input('원소 수를 입력하세요.: '))
+    x = [None] * num    # 원소 수가 num인 배열을 생성
+
+    for i in range(num):
+        x[i] = int(input(f'x[{i}]: '))
+
+    quick_sort(x)       # 배열 x를 퀵 정렬
+
+    print('오름차순으로 정렬했습니다.')
+    for i in range(num):
+        print(f'x[{i}] = {x[i]}')
+
 # -----------------------------------------
 # 7장. 문자열 검색
 # -----------------------------------------
