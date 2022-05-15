@@ -2253,6 +2253,10 @@ if __name__ == '__main__':
 # 4. 퀵정렬(quick sort)
 
 # 피벗(중심축)을 기준으로 작은 그룹과 큰 그룹으로 나누어서 최종적으로 모든 그룹이 1개 원소가 되면 종료
+# 스택의 크기는 배열의 원소 수와 같은 값으로 하고, 원소 수가 적은 쪽의 그룹을 먼저 푸시하여야 쌓이는 데이터 수를 최소화함
+# 피벗선택은 배열의 맨앞,가운데,맨뒤 원소를 정렬하고 가운데(피벗선택)와 맨뒤-1번째 원소를 교체하며
+# 범위는 left+1 ~ right+2 로 좁히며 진행
+# 원소 수가 9개 미만인 경우는 비효율적이라서 단순삽입정렬로 진행
 
 # [Do it! 실습 6-10] 배열을 두 그룹으로 나누기
 from typing import MutableSequence
@@ -2373,6 +2377,73 @@ def quick_sort(a: MutableSequence) -> None:
 
 if __name__ == '__main__':
     print('비재귀적인 퀵 정렬')
+    num = int(input('원소 수를 입력하세요.: '))
+    x = [None] * num    # 원소 수가 num인 배열을 생성
+
+    for i in range(num):
+        x[i] = int(input(f'x[{i}]: '))
+
+    quick_sort(x)       # 배열 x를 퀵 정렬
+
+    print('오름차순으로 정렬했습니다.')
+    for i in range(num):
+        print(f'x[{i}] = {x[i]}')
+
+# [Do it! 실습 6-13] 퀵 정렬 알고리즘 구현하기(원소 수가 9개 미만인 경우 단순삽입정렬)
+from typing import MutableSequence
+
+
+def sort3(a: MutableSequence, idx1: int, idx2: int, idx3: int):
+    """a[idx1], a[idx2], a[idx3]을 오름차순으로 정렬하고 가운데 값의 인덱스를 반환"""
+    if a[idx2] < a[idx1]: a[idx2], a[idx1] = a[idx1], a[idx2]
+    if a[idx3] < a[idx2]: a[idx3], a[idx2] = a[idx2], a[idx3]
+    if a[idx2] < a[idx1]: a[idx2], a[idx1] = a[idx1], a[idx2]
+    return idx2
+
+
+def insertion_sort(a: MutableSequence, left: int, right: int) -> None:
+    """a[left] ~ a[right]를 단순 삽입 정렬"""
+    for i in range(left + 1, right + 1):
+        j = i
+        tmp = a[i]
+        while j > 0 and a[j - 1] > tmp:
+            a[j] = a[j - 1]
+            j -= 1
+        a[j] = tmp
+
+
+def qsort(a: MutableSequence, left: int, right: int) -> None:
+    """a[left] ~ a[right]를 퀵 정렬"""
+    if right - left < 9:            # 원소 수가 9개 미만이면 단순 삽입 정렬을 호출
+        insertion_sort(a, left, right)
+    else:                           # 원소 수가 9개 이상이면 퀵 정렬을 수행
+        pl = left                   # 왼쪽 커서
+        pr = right                  # 오른쪽 커서
+        m = sort3(a, pl, (pl + pr) // 2, pr)
+        x = a[m]
+
+        a[m], a[pr - 1] = a[pr - 1], a[m]
+        pl += 1
+        pr -= 2
+        while pl <= pr:
+            while a[pl] < x: pl += 1
+            while a[pr] > x: pr -= 1
+            if pl <= pr:
+                a[pl], a[pr] = a[pr], a[pl]
+                pl += 1
+                pr -= 1
+
+        if left < pr: qsort(a, left, pr)
+        if pl < right: qsort(a, pl, right)
+
+
+def quick_sort(a: MutableSequence) -> None:
+    """퀵 정렬"""
+    qsort(a, 0, len(a) - 1)
+
+
+if __name__ == '__main__':
+    print('퀵 정렬을 합니다(원소 수가 9개 미만이면 단순 삽입 정렬).')
     num = int(input('원소 수를 입력하세요.: '))
     x = [None] * num    # 원소 수가 num인 배열을 생성
 
