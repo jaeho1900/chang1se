@@ -1481,7 +1481,7 @@ class FixedQueue:
     def __init__(self, capacity: int) -> None:
         """초기화 선언"""
         self.no = 0     # 현재 데이터 개수
-        self.front = 0  # 맨앞 원소 커서
+        self.front = 0  # 맨앞 원소 커서(인덱스를 저장하는 변수를 커서라고 함)
         self.rear = 0   # 맨끝 원소 커서
         self.capacity = capacity      # 큐의 크기
         self.que = [None] * capacity  # 큐의 본체
@@ -2118,7 +2118,7 @@ if __name__ == '__main__':
     for i in range(num):
         print(f'x[{i}] = {x[i]}')
 
-# 2. 단순삽입정렬(straight insertion sort, 두번째 위치 원소부터 앞쪽에 삽입하여 옮김)
+# 3. 단순삽입정렬(straight insertion sort, 두번째 위치 원소부터 앞쪽에 삽입하여 옮김)
 
 # [종료조건1] 정렬된 배열의 왼쪽 끝에 도달한 경우 (계속조건1, j가 0보다 큰 경우)
 # [종료조건2] 이동하고픈 원소값보다 작거나 같은 원소를 발견한 경우 (계속조건2, a[j-1]이 원소값보다 큰 경우)
@@ -2154,7 +2154,7 @@ if __name__ == '__main__':
         print(f'x[{i}] = {x[i]}')
 
 
-# 2-1. 이진삽입정렬(binary insertion sort)
+# 3-1. 이진삽입정렬(binary insertion sort)
 
 # [Do it! 실습 6C-2] 이진 삽입 정렬 알고리즘의 구현(bisect.insort 사용)
 from typing import MutableSequence
@@ -2209,7 +2209,7 @@ if __name__ == '__main__':
     for i in range(num):
         print(f'x[{i}] = {x[i]}')
 
-# 3. 셀정렬(shell sort, 단순삽입정렬의 보완판)
+# 4. 셀정렬(shell sort, 단순삽입정렬의 보완판)
 
 # h개 떨어진 원소끼리 정렬을 반복하고 마지막에 단순삽입정렬을 수행하여 정렬횟수는 늘지만 원소이동횟수가 줄어서 효율성 향상
 
@@ -2250,7 +2250,7 @@ if __name__ == '__main__':
     for i in range(num):
         print(f'x[{i}] = {x[i]}')
 
-# 4. 퀵정렬(quick sort)
+# 5. 퀵정렬(quick sort)
 
 # 피벗(중심축)을 기준으로 작은 그룹과 큰 그룹으로 나누어서 최종적으로 모든 그룹이 1개 원소가 되면 종료
 # 스택의 크기는 배열의 원소 수와 같은 값으로 하고, 원소 수가 적은 쪽의 그룹을 먼저 푸시하여야 쌓이는 데이터 수를 최소화함
@@ -2455,6 +2455,60 @@ if __name__ == '__main__':
     print('오름차순으로 정렬했습니다.')
     for i in range(num):
         print(f'x[{i}] = {x[i]}')
+
+# 6. 병합정렬(merge sort)
+
+# 배열을 두그룹으로 나누어 정렬한 후 병합하는 작업을 반복하는 알고리즘
+# 각각의 배열의 앞쪽 작은 원소부터 서로 비교하여 작은 원소를 꺼내 새로운 배열에 저장
+
+# [Do it! 실습 6-14] 정렬을 마친 두 배열을 병합하기
+from typing import Sequence, MutableSequence
+
+
+def merge_sorted_list(a: Sequence, b: Sequence, c: MutableSequence) -> None:
+    """정렬을 마친 배열 a와 b를 병합하여 c에 저장"""
+    pa, pb, pc = 0, 0, 0                 # 각 배열의 커서(인덱스변수를지칭)
+    na, nb, nc = len(a), len(b), len(c)  # 각 배열의 원소수
+
+    while pa < na and pb < nb:  # pa와 pb를 비교하여 작은 값을 pc에 저장
+        if a[pa] <= b[pb]:
+            c[pc] = a[pa]
+            pa += 1
+        else:
+            c[pc] = b[pb]
+            pb += 1
+        pc += 1
+
+    while pa < na:              # a에 남은 원소를 복사(a배열의 중간지점에서 b배열이 종료된 경우, a배열의 나머지 옮김)
+        c[pc] = a[pa]
+        pa += 1
+        pc += 1
+
+    while pb < nb:              # b에 남은 원소를 복사
+        c[pc] = b[pb]
+        pb += 1
+        pc += 1
+
+
+if __name__ == '__main__':
+    a = [2, 4, 6, 8, 11, 13]
+    b = [1, 2, 3, 4, 9, 16, 21]
+    c = [None] * (len(a) + len(b))
+    print('정렬을 마친 두 배열의 병합을 수행합니다.')
+
+    merge_sorted_list(a, b, c)  # 배열 a와 b를 병합하여 c에 저장
+
+    print('배열 a와 b를 병합하여 배열 c에 저장하였습니다.')
+    print(f'배열 a: {a}')
+    print(f'배열 b: {b}')
+    print(f'배열 c: {c}')
+
+# Tip. sorted() 함수로 정렬: 이터러블객체의 원소를 정렬하여 list형으로 반환
+a = [14, 6, 8, 11, 13]
+b = [11, 2, 7, 4]
+a, b = sorted([a, b])    # a, b의 첫번째부터 원소를 비교하여 a와 b를 정렬(배열내 원소정렬 않함)
+c = list(sorted(a + b))  # a와 b를 연결하여 오름차순정렬후 list로 변환하여 c에 저장
+print(a, b, c, sep='\n')
 
 # -----------------------------------------
 # 7장. 문자열 검색
