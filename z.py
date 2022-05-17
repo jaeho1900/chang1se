@@ -55,46 +55,33 @@ df2.pivot_table(values='X', index='Y', columns='Z', aggfunc=lambda x: len(x.uniq
 df2.pivot_table(values='X', index='Y', columns='Z', aggfunc=pd.Series.nunique)
 
 
-# # 판다스 정규표현식
 
-import pandas as pd  # re 라이브러리 불필요
 
-df = pd.DataFrame({'name': ['Alice','Bob','Charlie','Dave','Ellen','Frank'],
-                   'age': [24,42,18,68,24,30],
-                   'state': ['NY','CA','CA','TX','CA','NY'],
-                   'point': [64,24,70,70,88,57]}
-                  )
+# # 판다스 정규표현식: re 라이브러리 불필요)
+import pandas as pd
+df = pd.DataFrame({'name': ['Alice', 'Bob', 'Charlie', 'Dave', 'Ellen', 'Frank'],
+                   'age': [24, 42, 18, 68, 24, 30],
+                   'state': ['NY', 'CA', 'CA', 'TX', 'CA', 'NY'],
+                   'point': [64, 24, 70, 70, 88, 57]})
+
+# str.extract: 추출
+df.name.str.extract('\d{2,3}')
+df.loc[df.age.str.extract('^2')]
+
+# str.contains: 포함여부(True 또는 False 반환)
+df.state.str.contains('CA')
+len(df[df.state.str.contains('CA')])
 
 # 치환
-print(df.replace('(.*)li(.*)', r'\1LI\2', regex=True))
+df.replace('(.*)li(.*)', r'\1LI\2', regex=True)  # 그룹1과 매칭, 그룹2와 매칭
+sr.str.replace('김', '황')
 
-# str.extract: 특정 문자열을 추출
-df.age.str.extract('([a-zA-Z]+)\.')
-
-# str.contains: 지정한 문자열이 포함되어 있는지 확인(True 또는 False 반환)
-df.state.str.contains('(CA)')
-len(df[df.state.str.contains('(CA)')])
-
-
-
-import pandas as pd
-
-sampleData = pd.DataFrame()
-sampleData['val1'] = ['M', 'F', 'M', 'M', 'F']
-
-sampleData.loc[(sampleData.val1 == 'M'), 'val1']
-
-str.contains - 포함하면 값을 반환
-
-
- import pandas as pd
-
-sampleData = pd.DataFrame()
-sampleData['val1'] = ['abc1.pdf', 'abc2.pdf', 'abc3.pdf', 'abc4.pdf', 'abc5.pdf']
-
-
-위의 데이터에서 pdf 파일명 1~3만 추출하는 상황을 가정해보겠습니다.
-
-
-
-sampleData.loc[sampleData['val1'].str.contains(r"abc[1-3]")]
+# []: [ ] 문자 클래스는 대괄호 안에 포함된 문자들 중 하나와 매치를 뜻함
+# [0-9]: 숫자
+# [a-zA-Z]: 알파벳 모두
+# \d: 숫자와 매치, [0-9]와 동일한 표현식
+# \D: 숫자 아닌 것과 매치, [^0-9]와 동일한 표현식
+# \s: whitespace문자와 매치, [ \t\n\r\f\v]와 동일한 표현식. 맨 앞의 빈칸은 공백문자를 의미
+# \S: whitespace문자가 아닌 것과 매치, [^ \t\n\r\f\v]와 동일한 표현식
+# \w: 문자+숫자와 매치, [a-zA-Z0-9_]와 동일한 표현식
+# \W: 문자+숫자가 아닌 문자와 매치, [^a-zA-Z0-9_]와 동일한 표현식
