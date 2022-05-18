@@ -8,38 +8,7 @@ df.shape
 df.columns
 
 df.건물.head(11)
-
-len(df.건물.str.contains('수퍼').head(11))
-
-
-
-
-# except store
-df[df.건물 is not re.search('\d{3}', df.건물[0])]
-df[df.건물 == re.search('^KR', df.건물)]
-
-
-print(re.search('\d{3}', df.건물[0]))
-
-
-occ = []
-for i in len(df.건물):
-    occ.append(df[df.건물 != re.search('\d{3}', df.건물[0])])
-
-
-
-
-
-print(occ)
-
-
-
-
-grouped = df.groupby('고객군')
-
-
-
-
+len(df[df.건물.str.contains('([^수퍼])')])
 
 i = 0
 for name, data in grouped:
@@ -55,33 +24,28 @@ df2.pivot_table(values='X', index='Y', columns='Z', aggfunc=lambda x: len(x.uniq
 df2.pivot_table(values='X', index='Y', columns='Z', aggfunc=pd.Series.nunique)
 
 
-
-
-# # 판다스 정규표현식: re 라이브러리 불필요)
+# #
 import pandas as pd
 df = pd.DataFrame({'name': ['Alice', 'Bob', 'Charlie', 'Dave', 'Ellen', 'Frank'],
                    'age': [24, 42, 18, 68, 24, 30],
                    'state': ['NY', 'CA', 'CA', 'TX', 'CA', 'NY'],
                    'point': [64, 24, 70, 70, 88, 57]})
 
-# str.extract: 추출
-df.name.str.extract('\d{2,3}')
-df.loc[df.age.str.extract('^2')]
+print(df)
 
-# str.contains: 포함여부(True 또는 False 반환)
-df.state.str.contains('CA')
-len(df[df.state.str.contains('CA')])
+# str.extract 추출: 캡쳐그룹생성및 str형변환 필요
+df.name.str.extract(r'(.+li)')
+df.name.str.extract(r'(.+)(li)(\w)*')  # (3개)그룹을 나누면 (3개)열로 분리됨
+df.age.astype(str).str.extract(r'(2)?')
 
-# 치환
-df.replace('(.*)li(.*)', r'\1LI\2', regex=True)  # 그룹1과 매칭, 그룹2와 매칭
-sr.str.replace('김', '황')
+# str.contains 포함여부(regex 옵션지정 필요)
+df.state.str.contains('CA', regex=True)
+len(df[df.state.str.contains('CA', regex=True)])
+df[df.state.str.contains('CA', regex=True)]
 
-# []: [ ] 문자 클래스는 대괄호 안에 포함된 문자들 중 하나와 매치를 뜻함
-# [0-9]: 숫자
-# [a-zA-Z]: 알파벳 모두
-# \d: 숫자와 매치, [0-9]와 동일한 표현식
-# \D: 숫자 아닌 것과 매치, [^0-9]와 동일한 표현식
-# \s: whitespace문자와 매치, [ \t\n\r\f\v]와 동일한 표현식. 맨 앞의 빈칸은 공백문자를 의미
-# \S: whitespace문자가 아닌 것과 매치, [^ \t\n\r\f\v]와 동일한 표현식
-# \w: 문자+숫자와 매치, [a-zA-Z0-9_]와 동일한 표현식
-# \W: 문자+숫자가 아닌 문자와 매치, [^a-zA-Z0-9_]와 동일한 표현식
+# 치환(regex 옵션지정 필요)
+df.replace('(.*)li(.*)', r'\1 123 \2', regex=True)
+df.state.str.replace('N.', '뉴욕', regex=False)
+
+
+
