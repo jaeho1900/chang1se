@@ -2569,8 +2569,58 @@ if __name__ == '__main__':
 
 # 7. 힙정렬(heap sort)
 
-# 알고리즘: 각각의 배열의 앞쪽 작은 원소부터 서로 비교하여 작은 원소를 꺼내 새로운 배열에 저장
+# 알고리즘: 힙(쌓아둔더미)에서는 최대 또는 최소값이 루트에 존재
+# 루트값을 꺼낸 후 마지막 원소를 루트로 이동
+# 루트에서 시작하여 자신값과 직계자손값을 비교하여 최댓, 최솟값을 가진 원소와 자신값을 교환하며
+# 아래쪽으로 내려가는 작업을 반복
+# 자신값이 최적값이거나 자식이없는 노드까지 도달하면 종료
 
+# [Do it! 실습 6-16] 힙 정렬 알고리즘 구현하기
+from typing import MutableSequence
+
+
+def heap_sort(a: MutableSequence) -> None:
+    """힙 정렬"""
+
+    def down_heap(a: MutableSequence, left: int, right: int) -> None:
+        """a[left] ~ a[right]를 힙으로 만들기"""
+        temp = a[left]      # 루트
+
+        parent = left
+        while parent < (right + 1) // 2:
+            cl = parent * 2 + 1     # 왼쪽 자식
+            cr = cl + 1             # 오른쪽 자식(parent * 2 + 2)
+            child = cr if cr <= right and a[cr] > a[cl] else cl  # 큰 값을 선택합니다.
+            if temp >= a[child]:
+                break
+            a[parent] = a[child]
+            parent = child
+        a[parent] = temp
+
+    n = len(a)
+
+    for i in range((n - 1) // 2, -1, -1):   # a[i] ~ a[n-1]을 힙으로 만들기
+        """배열a를 힙상태로 만듦"""
+        down_heap(a, i, n - 1)
+
+    for i in range(n - 1, 0, -1):
+        """최댓값a[0]을 마지막원소와 교환하고 남은 부분을 다시 힙상태로 만듦"""
+        a[0], a[i] = a[i], a[0]     # 최댓값인 a[0]과 마지막 원소 a[i]를 교환
+        down_heap(a, 0, i - 1)      # a[0] ~ a[i-1]을 힙으로 만들기(2단계)
+
+if __name__ == '__main__':
+    print('힙 정렬을 수행합니다.')
+    num = int(input('원소 수를 입력하세요. : '))
+    x = [None] * num    # 원소 수가 num인 배열을 생성
+
+    for i in range(num):
+        x[i] = int(input(f'x[{i}] : '))
+
+    heap_sort(x)        # 배열 x를 힙 정렬
+
+    print('오름차순으로 정렬했습니다.')
+    for i in range(num):
+        print(f'x[{i}] = {x[i]}')
 
 # -----------------------------------------
 # 7장. 문자열 검색
