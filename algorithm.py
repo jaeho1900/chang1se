@@ -2608,6 +2608,7 @@ def heap_sort(a: MutableSequence) -> None:
         a[0], a[i] = a[i], a[0]     # 최댓값인 a[0]과 마지막 원소 a[i]를 교환
         down_heap(a, 0, i - 1)      # a[0] ~ a[i-1]을 힙으로 만들기(2단계)
 
+
 if __name__ == '__main__':
     print('힙 정렬을 수행합니다.')
     num = int(input('원소 수를 입력하세요. : '))
@@ -2622,6 +2623,51 @@ if __name__ == '__main__':
     for i in range(num):
         print(f'x[{i}] = {x[i]}')
 
+# 8. 도수정렬(counting sort)
+
+# 원소의 대소를 판단하지 않고 for문만을 사용하여 빠르게 정렬하는 알고리즘
+# [1단계] 도수구간수만큼의 도수분포배열f 생성하고 a원소값을 f배열의 인덱스에 맞춰 f원소값을 1씩 증가시킴
+# [2단계] f[1]부터 바로앞의 원소수를 누적하며 누적도수분포배열f 로 덮었씌움
+# [3단계] a배열의 맨뒤 원소값부터 누적도수배열과 비교하며 작업용배열(Raw원소만큼의 배열)에 배치
+#         중복방지위해 a배열의 원소와 비교된 누적도수배열의 원소값은 -1씩 줄임
+# [4단계] 작업용배열을 a배열에 복사
+
+# [Do it! 실습 6-17] 도수 정렬 알고리즘 구현하기
+from typing import MutableSequence
+
+
+def fsort(a: MutableSequence, max: int) -> None:
+    """도수 정렬(배열 원솟값은 0 이상 max 이하)"""
+    n = len(a)           # 정렬할 배열 a
+    f = [0] * (max + 1)  # 누적 도수 분포표 배열 f
+    b = [0] * n          # 작업용 배열 b
+
+    for i in range(n):              f[a[i]] += 1                     # [1단계]
+    for i in range(1, max + 1):     f[i] += f[i - 1]                 # [2단계]
+    for i in range(n - 1, -1, -1):  f[a[i]] -= 1; b[f[a[i]]] = a[i]  # [3단계]
+    for i in range(n):              a[i] = b[i]                      # [4단계]
+
+
+def counting_sort(a: MutableSequence) -> None:
+    """도수 정렬"""
+    fsort(a, max(a))
+
+
+if __name__ == '__main__':
+    print('도수 정렬을 합니다.')
+    num = int(input('원소 수를 입력하세요. : '))
+    x = [None] * num                                                # 원소 수가 num인 배열을 생성
+
+    for i in range(num):                                            # 양수만 입력받음
+        while True:
+            x[i] = int(input(f'x[{i}] : '))
+            if x[i] >= 0: break
+
+    counting_sort(x)                                                # 배열 x를 도수 정렬
+
+    print('오름차순으로 정렬했습니다.')
+    for i in range(num):
+        print(f'x[{i}] = {x[i]}')
 # -----------------------------------------
 # 7장. 문자열 검색
 # -----------------------------------------
