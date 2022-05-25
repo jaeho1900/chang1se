@@ -2644,10 +2644,11 @@ def fsort(a: MutableSequence, max: int) -> None:
     f = [0] * (max + 1)  # 누적 도수 분포표 배열 f
     b = [0] * n          # 작업용 배열 b
 
-    for i in range(n):              f[a[i]] += 1                     # [1단계]
-    for i in range(1, max + 1):     f[i] += f[i - 1]                 # [2단계]
-    for i in range(n - 1, -1, -1):  f[a[i]] -= 1; b[f[a[i]]] = a[i]  # [3단계]
-    for i in range(n):              a[i] = b[i]                      # [4단계]
+    for i in range(n): f[a[i]] += 1                  # [1단계]
+    for i in range(1, max + 1): f[i] += f[i - 1]     # [2단계]
+    for i in range(n - 1, -1, -1): f[a[i]] -= 1      # [3단계]
+    b[f[a[i]]] = a[i]
+    for i in range(n): a[i] = b[i]                   # [4단계]
 
 
 def counting_sort(a: MutableSequence) -> None:
@@ -2658,14 +2659,14 @@ def counting_sort(a: MutableSequence) -> None:
 if __name__ == '__main__':
     print('도수 정렬을 합니다.')
     num = int(input('원소 수를 입력하세요. : '))
-    x = [None] * num                                                # 원소 수가 num인 배열을 생성
+    x = [None] * num                                 # 원소 수가 num인 배열을 생성
 
-    for i in range(num):                                            # 양수만 입력받도록 제한
+    for i in range(num):                             # 양수만 입력받도록 제한
         while True:
             x[i] = int(input(f'x[{i}] : '))
             if x[i] >= 0: break
 
-    counting_sort(x)                                                # 배열 x를 도수 정렬
+    counting_sort(x)                                 # 배열 x를 도수 정렬
 
     print('오름차순으로 정렬했습니다.')
     for i in range(num):
@@ -2717,22 +2718,23 @@ if __name__ == '__main__':
 # str.index(sub, start, end)   # 처음찾은인덱스 또는 ValueError
 # str.rindex(sub, start, end)  # 마지막찾은인덱스 또는 ValueError
 # T-3. with 계열 함수: 패턴이 문자열의 시작 또는 끝에 포함되어 있는지 여부 반환
-# str.startwith(prefix, start, end)
-# str.endwith(suffix, start, end)
+# str.startswith(prefix, start, end)
+# str.endswith(suffix, start, end)
 
 # # 2. KMP법
 
 # 패턴을 이용한 표를 작성하여 검사할 위치를 조정하는 알고리즘
 
+# 사전에 패턴 2개를 겹치도록 맞추어 검사를 시작할 곳을 계산한 skip table 작성
 
 # [Do it! 실습 7-2] KMP법으로 문자열 검색하기
 def kmp_match(txt: str, pat: str) -> int:
     """KMP법에 의한 문자열 검색"""
-    pt = 1  # txt를 따라가는 커서
-    pp = 0  # pat를 따라가는 커서
-    skip = [0] * (len(pat) + 1)  # 건너뛰기 표
+    pt = 1                       # txt를 따라가는 커서
+    pp = 0                       # pat를 따라가는 커서
+    skip = [0] * (len(pat) + 1)  # 건너뛰기표(skip table)
 
-    # 건너뛰기 표 만들기
+    # 건너뛰기표 만들기
     skip[pt] = 0
     while pt != len(pat):
         if pat[pt] == pat[pp]:
@@ -2745,7 +2747,7 @@ def kmp_match(txt: str, pat: str) -> int:
         else:
             pp = skip[pp]
 
-    # 검색하기
+    # 문자열 검색하기
     pt = pp = 0
     while pt != len(txt) and pp != len(pat):
         if txt[pt] == pat[pp]:
@@ -2763,7 +2765,7 @@ if __name__ == '__main__':
     s1 = input('텍스트를 입력하세요.: ')  # 텍스트용 문자열
     s2 = input('패턴을 입력하세요.: ')    # 패턴용 문자열
 
-    idx = kmp_match(s1, s2)  # 문자열 s1~s2를 KMP법으로 검색
+    idx = kmp_match(s1, s2)              # 문자열 s1~s2를 KMP법으로 검색
 
     if idx == -1:
         print('텍스트 안에 패턴이 존재하지 않습니다.')
@@ -2771,6 +2773,8 @@ if __name__ == '__main__':
         print(f'{(idx + 1)}번째 문자에서 일치합니다.')
 
 # # 3. 보이어무어법
+
+# 패턴의 끝문자부터 앞쪽으로 검사수행하는 널리 사용되는 알고리즘
 
 
 
