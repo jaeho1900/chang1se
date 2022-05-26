@@ -2775,8 +2775,45 @@ if __name__ == '__main__':
 # # 3. 보이어무어법
 
 # 패턴의 끝문자부터 앞쪽으로 검사수행하는 널리 사용되는 알고리즘
+# 패턴에 포함되지 않은 문자를 만나면 한번에 m만큼 이동(패턴길이m, 문자열길이n)
+# 패턴에 포함된 문자를 만나면 일치하는 패턴의 마지막문자 인덱스를 k라면 이동은 m-k-1
 
 
+# [Do it! 실습 7-3] 보이어 무어법으로 문자열 검색하기(0~255 문자)
+def bm_match(txt: str, pat: str) -> int:
+    """보이어 무어법에 의한 문자열 검색"""
+    skip = [None] * 256  # 모든 문자의 이동량 계산을 위한 건너뛰기표 원소는 256개 설정
+
+    # 건너뛰기표 만들기
+    for pt in range(256):
+        skip[pt] = len(pat)
+    for pt in range(len(pat)):
+        skip[ord(pat[pt])] = len(pat) - pt - 1  # ord()함수는 문자를 전달받아서 유니코드 정수를 반환
+
+    # 검색하기
+    while pt < len(txt):
+        pp = len(pat) - 1
+        while txt[pt] == pat[pp]:
+            if pp == 0:
+                return pt
+            pt -= 1
+            pp -= 1
+        pt += skip[ord(txt[pt])] if skip[ord(txt[pt])] > len(pat) - pp \
+              else len(pat) - pp
+
+    return -1
+
+
+if __name__ == '__main__':
+    s1 = input('텍스트를 입력하세요.: ')  # 텍스트 문자열
+    s2 = input('패턴을 입력하세요.: ')    # 패턴 문자열
+
+    idx = bm_match(s1, s2)               # 문자열 s1~s2를 KMP법으로 검색
+
+    if idx == -1:
+        print('텍스트 안에 패턴이 존재하지 않습니다.')
+    else:
+        print(f'{(idx + 1)}번째 문자에서 일치합니다.')
 
 # -----------------------------------------
 # 8장. 연결 리스트 검색
