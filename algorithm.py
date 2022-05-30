@@ -877,7 +877,7 @@ if __name__ == '__main__':
 # 해시테이블의 크기는 소수를 선호, 테이블이 크면 충돌위험은 감소하나 메모리낭비와 상충
 
 # # chained_hash.py 로 저장 =====
-from __future__ import annotations
+# from __future__ import annotations
 from typing import Any, Type
 import hashlib
 
@@ -1023,7 +1023,7 @@ while True:
 # 개별 버킷의 속성: 노드클래스(데이터가 저장되어 있음, 비어 있음, 삭제 완료)로 생성
 
 # # opem_hash.py 로 저장 =====
-from __future__ import annotations
+# from __future__ import annotations
 from typing import Any, Type
 from enum import Enum
 import hashlib
@@ -2727,6 +2727,7 @@ if __name__ == '__main__':
 
 # 사전에 패턴 2개를 겹치도록 맞추어 검사를 시작할 곳을 계산한 skip table 작성
 
+
 # [Do it! 실습 7-2] KMP법으로 문자열 검색하기
 def kmp_match(txt: str, pat: str) -> int:
     """KMP법에 의한 문자열 검색"""
@@ -2799,7 +2800,7 @@ def bm_match(txt: str, pat: str) -> int:
             pt -= 1
             pp -= 1
         pt += skip[ord(txt[pt])] if skip[ord(txt[pt])] > len(pat) - pp \
-              else len(pat) - pp
+            else len(pat) - pp
 
     return -1
 
@@ -2818,6 +2819,7 @@ if __name__ == '__main__':
 # -----------------------------------------
 # 8장. 연결 리스트 검색
 # -----------------------------------------
+
 # -----------------------------------------
 # 9장. 이진 트리 검색
 # -----------------------------------------

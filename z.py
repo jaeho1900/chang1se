@@ -91,7 +91,7 @@ ndf2['week'] = ndf2.index.day_name()
 ndf2['hour'] = ndf2.index.hour
 ndf_week_hour = ndf2.groupby(['week', 'hour']).size()
 ndf_table = ndf_week_hour.rename_axis(['Weekday', 'Hour']).unstack('Weekday')
-days=['Monday', 'Tuesday', 'Wednesday', 'Tuesday', 'Friday', 'Saturday', 'Sunday']
+days = ['Monday', 'Tuesday', 'Wednesday', 'Tuesday', 'Friday', 'Saturday', 'Sunday']
 ndf_table_sort = ndf_table.reindex(columns=days).sort_index(ascending=False)
 sns.heatmap(ndf_table_sort, cmap='YlGn')
 
