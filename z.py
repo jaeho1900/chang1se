@@ -101,13 +101,3 @@ ts = ndf2['경보명'].resample('D').count()
 result = seasonal_decompose(ts, model='Additive')
 result.plot()
 plt.show()
-
-
-
-while ptr is not None:
-    if ptr.data == data:
-        self.current = ptr
-        return cnt    # 종료조건2: 검색조건 만족하는 노드를 찾은 경우
-    cnt += 1
-    ptr = ptr.next
-return -1

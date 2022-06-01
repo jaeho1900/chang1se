@@ -2864,46 +2864,42 @@ class LinkedList:
         """연결 리스트에 data가 포함되어 있는지 판단"""
         return self.search(data) >= 0
 
-# Do it! 실습 8-1 [D]
     def add_first(self, data: Any) -> None:
         """맨 앞에 노드를 삽입"""
-        ptr = self.head  # 삽입 전의 머리 노드
-        self.head = self.current = Node(data, ptr)
+        ptr = self.head                             # 삽입 전의 머리 노드를 참조하는 포인터 저장
+        self.head = self.current = Node(data, ptr)  # 삽입할 노드를 생성
         self.no += 1
 
-# Do it! 실습 8-1 [E]
     def add_last(self, data: Any):
         """맨 끝에 노드를 삽입"""
-        if self.head is None:     # 리스트가 비어 있으면
-            self.add_first(data)  # 맨앞에 노드 삽입
+        if self.head is None:     # 리스트가 비어 있으면 맨앞에 노드를 삽입하는 것과 같은 처리
+            self.add_first(data)
         else:
             ptr = self.head
-            while ptr.next is not None:
-                ptr = ptr.next  # while문을 종료할 때 ptr은 꼬리 노드를 참조
-            ptr.next = self.current = Node(data, None)
+            while ptr.next is not None:                 # 꼬리노드(next가 None) 찾기
+                ptr = ptr.next
+            ptr.next = self.current = Node(data, None)  # 삽입할 노드를 생성
             self.no += 1
 
-# Do it! 실습 8-1 [F]
     def remove_first(self) -> None:
         """머리 노드를 삭제"""
-        if self.head is not None:  # 리스트가 비어 있으면
+        if self.head is not None:  # 리스트가 비어 있지 않으면 머리노드에 대한 참조를 다음 노드로 건너뜀
             self.head = self.current = self.head.next
         self.no -= 1
 
-# Do it! 실습 8-1 [G]
     def remove_last(self):
         """꼬리 노드 삭제"""
         if self.head is not None:
             if self.head.next is None:  # 노드가 1개 뿐이라면
                 self.remove_first()     # 머리 노드를 삭제
             else:
-                ptr = self.head  # 스캔 중인 노드
-                pre = self.head  # 스캔 중인 노드의 앞쪽 노드
+                ptr = self.head         # 스캔 중인 노드
+                pre = self.head         # 스캔 중인 노드의 앞쪽 노드
 
-                while ptr.next is not None:
+                while ptr.next is not None:  # 꼬리노드와 꼬리 바로앞노드를 찾음
                     pre = ptr
-                    ptr = ptr.next  # while문 종료시 ptr은 꼬리 노드를 참조하고 pre는 맨끝에서 두 번째 노드를 참조
-                pre.next = None     # pre는 삭제 뒤 꼬리 노드
+                    ptr = ptr.next
+                pre.next = None     # 꼬리 바로앞노드에 none을 넣어 꼬리참조를 끊음
                 self.current = pre
                 self.no -= 1
 
