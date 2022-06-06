@@ -2822,7 +2822,7 @@ if __name__ == '__main__':
 # 연결 리스트의 원소를 노드라고 칭하는데, 노드는 데이터와 뒤쪽 노드를 가리키는 참조 포인터를 갖고 있다
 # 연결 리스트의 리스트는 파이썬에서 제공하는 리스트 자료형(배열)과는 다르다
 
-# [Do it! 실습 8-1] 포인터를 이용한 연결 리스트 만들기
+# 포인터를 이용한 연결 리스트 만들기 linked_list.py 저장 ----------
 from typing import Any, Type
 
 
@@ -2899,24 +2899,23 @@ class LinkedList:
                 while ptr.next is not None:  # 꼬리노드와 꼬리 바로앞노드를 찾음
                     pre = ptr
                     ptr = ptr.next
-                pre.next = None     # 꼬리 바로앞노드에 none을 넣어 꼬리참조를 끊음
+                pre.next = None        # 맨끝에서 2번째 노드에 none을 넣어서 꼬리참조를 끊음
                 self.current = pre
                 self.no -= 1
 
-# Do it! 실습 8-1 [H]
     def remove(self, p: Node) -> None:
-        """노드 p를 삭제"""
+        """임의의 노드 p를 삭제"""
         if self.head is not None:
-            if p is self.head:       # p가 머리 ​​노드이면
-                self.remove_first()  # 머리 노드를 삭제
+            if p is self.head:         # p가 머리 ​​노드이면 머리 노드를 삭제
+                self.remove_first()
             else:
                 ptr = self.head
 
                 while ptr.next is not p:
                     ptr = ptr.next
-                    if ptr is None:
-                        return  # ptr은 리스트에 존재하지 않음
-                ptr.next = p.next
+                    if ptr is None:    # None을 만나면 삭제 수행 않고 복귀
+                        return
+                ptr.next = p.next      # p 이전노드가 p 다음노드를 참조하도록하여 삭제 처리
                 self.current = ptr
                 self.no -= 1
 
@@ -2932,13 +2931,12 @@ class LinkedList:
         self.no = 0
 
     def next(self) -> bool:
-        """주목 노드를 한 칸 뒤로 진행"""
+        """주목 노드를 한 칸 뒤로 이동"""
         if self.current is None or self.current.next is None:
-            return False  # 진행할 수 없음
+            return False              # 이동할 수 없음
         self.current = self.current.next
         return True
 
-# Do it! 실습 8-1 [I]
     def print_current_node(self) -> None:
         """주목 노드를 출력"""
         if self.current is None:
@@ -2954,7 +2952,6 @@ class LinkedList:
             print(ptr.data)
             ptr = ptr.next
 
-# Do it! 실습 8-1 [J]
     def __iter__(self) -> LinkedListIterator:
         """이터레이터(반복자)를 반환"""
         return LinkedListIterator(self.head)
@@ -2976,6 +2973,78 @@ class LinkedListIterator:
             data = self.current.data
             self.current = self.current.next
             return data
+# linked_list.py 파일 끝 ----------
+
+
+# [Do it! 실습 8-2] 포인터로 이용한 연결 리스트 클래스 LinkedList 사용하기
+from enum import Enum
+from linked_list import LinkedList
+
+Menu = Enum('Menu', ['머리에노드삽입', '꼬리에노드삽입', '머리노드삭제',
+                     '꼬리노드삭제', '주목노드출력', '주목노드이동',
+                     '주목노드삭제', '모든노드삭제', '검색', '멤버십판단',
+                     '모든노드출력', '스캔', '종료'])
+
+
+def select_Menu() -> Menu:
+    """메뉴 선택"""
+    s = [f'({m.value}){m.name}' for m in Menu]
+    while True:
+        print(*s, sep='  ', end='')
+        n = int(input(': '))
+        if 1 <= n <= len(Menu):
+            return Menu(n)
+
+
+lst = LinkedList()  # 연결 리스트를 생성
+
+while True:
+    menu = select_Menu()  # 메뉴 선택
+
+    if menu == Menu.머리에노드삽입:  # 맨 앞에 노드 삽입
+        lst.add_first(int(input('머리에 넣을 값을 입력하세요.: ')))
+
+    elif menu == Menu.꼬리에노드삽입:  # 맨 끝에 노드 삽입
+        lst.add_last(int(input('꼬리에 넣을 값을 입력하세요.: ')))
+
+    elif menu == Menu.머리노드삭제:  # 맨 앞 노드 삭제
+        lst.remove_first()
+
+    elif menu == Menu.꼬리노드삭제:  # 맨 끝 노드 삭제
+        lst.remove_last()
+
+    elif menu == Menu.주목노드출력:  # 주목 노드 출력
+        lst.print_current_node()
+
+    elif menu == Menu.주목노드이동:  # 주목 노드를 한 칸 뒤로 이동
+        lst.next()
+
+    elif menu == Menu.주목노드삭제:  # 주목 노드 삭제
+        lst.remove_current_node()
+
+    elif menu == Menu.모든노드삭제:  # 모든 노드를 삭제
+        lst.clear()
+
+    elif menu == Menu.검색:  # 노드를 검색
+        pos = lst.search(int(input('검색할 값을 입력하세요.: ')))
+        if pos >= 0:
+            print(f'그 값의 데이터는 {pos + 1}번째에 있습니다.')
+        else:
+            print('해당 데이터가 없습니다.')
+
+    elif menu == Menu.멤버십판단:  # 멤버십 판단
+        print('그 값의 데이터는 포함되어' + (' 있습니다.' if int(input('멤버십 판단할 값을 입력하세요.: ')) in lst else ' 있지 않습니다.'))
+
+    elif menu == Menu.모든노드출력:  # 모든 노드 출력
+        lst.print()
+
+    elif menu == Menu.스캔:  # 모든 노드 스캔
+        for e in lst:
+            print(e)
+
+    else:  # 종료
+        break
+
 
 # -----------------------------------------
 # 9장. 이진 트리 검색
