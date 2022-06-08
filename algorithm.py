@@ -3048,6 +3048,8 @@ while True:
 
 # # 커서를 이용한 연결 리스트(ArrayLinkedList)
 # 다음 노드의 인덱스를 저장하는 커서를 두는 배열로 구현, 꼬리노드의 커서값은 -1
+# 연결리스트의 논리적 위치와 배열의 물리적 위치가 일치하지 않음
+# 삭제이벤트는 배열 내 빈레코드를 발생시키므로 이를 해결하기 위해 프리리스트를 적용
 
 # [Do it! 실습 8-3] 커서로 선형 리스트 만들기
 # from __future__ import annotations
@@ -3085,8 +3087,8 @@ class ArrayLinkedList:
 
     def get_insert_index(self):
         """다음에 삽입할 레코드의 첨자를 구합니다"""
-        if self.deleted == Null:  # 삭제 레코드는 존재하지 않음
-            if self.max + 1 < self.capacity:
+        if self.deleted == Null:              # 삭제 레코드는 존재하지 않아서 프리리스트가 비어 있으면
+            if self.max + 1 < self.capacity:  #  max를 증가시켜 배열 맨끝의 미사용 레코드를 사용함
                 self.max += 1
                 return self.max   # 새 레코드를 사용
             else:
@@ -3097,7 +3099,7 @@ class ArrayLinkedList:
             return rec
 
     def delete_index(self, idx: int) -> None:
-        """레코드 idx를 프리 리스트에 등록"""
+        """레코드 idx를 프리 리스트(삭제된 레코드그룹을 관리)에 등록"""
         if self.deleted == Null:      # 삭제 레코드는 존재하지 않음
             self.deleted = idx
             self.n[idx].dnext = Null  # idx를 프리 리스트의 맨 앞에 등록
