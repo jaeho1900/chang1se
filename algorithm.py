@@ -3088,7 +3088,7 @@ class ArrayLinkedList:
     def get_insert_index(self):
         """다음에 삽입할 레코드의 첨자를 구합니다"""
         if self.deleted == Null:              # 삭제 레코드는 존재하지 않아서 프리리스트가 비어 있으면
-            if self.max + 1 < self.capacity:  #  max를 증가시켜 배열 맨끝의 미사용 레코드를 사용함
+            if self.max + 1 < self.capacity:  # max를 증가시켜 배열 맨끝의 미사용 레코드를 사용함
                 self.max += 1
                 return self.max   # 새 레코드를 사용
             else:
