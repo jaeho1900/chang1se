@@ -2270,8 +2270,10 @@ def partition(a: MutableSequence) -> None:
     x = a[n // 2]  # 피벗(가운데 원소)
 
     while pl <= pr:
-        while a[pl] < x: pl += 1
-        while a[pr] > x: pr -= 1
+        while a[pl] < x:
+            pl += 1
+        while a[pr] > x:
+            pr -= 1
         if pl <= pr:
             a[pl], a[pr] = a[pr], a[pl]
             pl += 1
@@ -2313,15 +2315,19 @@ def qsort(a: MutableSequence, left: int, right: int) -> None:
     print(f'a[{left}] ~ a[{right}]: ', *a[left: right + 1])  # 과정 출력을 위한 추가된 부분(1줄)
 
     while pl <= pr:    # 실습 6-10과 같은 while 문
-        while a[pl] < x: pl += 1
-        while a[pr] > x: pr -= 1
+        while a[pl] < x:
+            pl += 1
+        while a[pr] > x:
+            pr -= 1
         if pl <= pr:
             a[pl], a[pr] = a[pr], a[pl]
             pl += 1
             pr -= 1
 
-    if left < pr: qsort(a, left, pr)     # 좌우 각 그룹을 다시 나누기 위한 재귀 호출 추가
-    if pl < right: qsort(a, pl, right)
+    if left < pr:
+        qsort(a, left, pr)     # 좌우 각 그룹을 다시 나누기 위한 재귀 호출 추가
+    if pl < right:
+        qsort(a, pl, right)
 
 
 def quick_sort(a: MutableSequence) -> None:
@@ -2359,15 +2365,19 @@ def qsort(a: MutableSequence, left: int, right: int) -> None:
         x = a[(left + right) // 2]          # 피벗(중앙 요소)
 
         while pl <= pr:
-            while a[pl] < x: pl += 1
-            while a[pr] > x: pr -= 1
+            while a[pl] < x:
+                pl += 1
+            while a[pr] > x:
+                pr -= 1
             if pl <= pr:                        # 실습 6-10, 실습 6-11과 같음
                 a[pl], a[pr] = a[pr], a[pl]
                 pl += 1
                 pr -= 1
 
-        if left < pr: range.push((left, pr))    # 왼쪽 그룹의 커서를 저장
-        if pl < right: range.push((pl, right))  # 오른쪽 그룹의 커서를 저장
+        if left < pr:
+            range.push((left, pr))    # 왼쪽 그룹의 커서를 저장
+        if pl < right:
+            range.push((pl, right))  # 오른쪽 그룹의 커서를 저장
 
 
 def quick_sort(a: MutableSequence) -> None:
@@ -2395,9 +2405,12 @@ from typing import MutableSequence
 
 def sort3(a: MutableSequence, idx1: int, idx2: int, idx3: int):
     """a[idx1], a[idx2], a[idx3]을 오름차순으로 정렬하고 가운데 값의 인덱스를 반환"""
-    if a[idx2] < a[idx1]: a[idx2], a[idx1] = a[idx1], a[idx2]
-    if a[idx3] < a[idx2]: a[idx3], a[idx2] = a[idx2], a[idx3]
-    if a[idx2] < a[idx1]: a[idx2], a[idx1] = a[idx1], a[idx2]
+    if a[idx2] < a[idx1]:
+        a[idx2], a[idx1] = a[idx1], a[idx2]
+    if a[idx3] < a[idx2]:
+        a[idx3], a[idx2] = a[idx2], a[idx3]
+    if a[idx2] < a[idx1]:
+        a[idx2], a[idx1] = a[idx1], a[idx2]
     return idx2
 
 
@@ -2426,15 +2439,19 @@ def qsort(a: MutableSequence, left: int, right: int) -> None:
         pl += 1
         pr -= 2
         while pl <= pr:
-            while a[pl] < x: pl += 1
-            while a[pr] > x: pr -= 1
+            while a[pl] < x:
+                pl += 1
+            while a[pr] > x:
+                pr -= 1
             if pl <= pr:
                 a[pl], a[pr] = a[pr], a[pl]
                 pl += 1
                 pr -= 1
 
-        if left < pr: qsort(a, left, pr)
-        if pl < right: qsort(a, pl, right)
+        if left < pr:
+            qsort(a, left, pr)
+        if pl < right:
+            qsort(a, pl, right)
 
 
 def quick_sort(a: MutableSequence) -> None:
@@ -2644,11 +2661,15 @@ def fsort(a: MutableSequence, max: int) -> None:
     f = [0] * (max + 1)  # 누적 도수 분포표 배열 f
     b = [0] * n          # 작업용 배열 b
 
-    for i in range(n): f[a[i]] += 1                  # [1단계]
-    for i in range(1, max + 1): f[i] += f[i - 1]     # [2단계]
-    for i in range(n - 1, -1, -1): f[a[i]] -= 1      # [3단계]
+    for i in range(n):
+        f[a[i]] += 1                  # [1단계]
+    for i in range(1, max + 1):
+        f[i] += f[i - 1]              # [2단계]
+    for i in range(n - 1, -1, -1):
+        f[a[i]] -= 1                  # [3단계]
     b[f[a[i]]] = a[i]
-    for i in range(n): a[i] = b[i]                   # [4단계]
+    for i in range(n):
+        a[i] = b[i]                   # [4단계]
 
 
 def counting_sort(a: MutableSequence) -> None:
@@ -2664,7 +2685,8 @@ if __name__ == '__main__':
     for i in range(num):                             # 양수만 입력받도록 제한
         while True:
             x[i] = int(input(f'x[{i}] : '))
-            if x[i] >= 0: break
+            if x[i] >= 0:
+                break
 
     counting_sort(x)                                 # 배열 x를 도수 정렬
 
@@ -3051,7 +3073,7 @@ while True:
 # 연결리스트의 논리적 위치와 배열의 물리적 위치가 일치하지 않음
 # 삭제이벤트는 배열 내 빈레코드를 발생시키므로 이를 해결하기 위해 프리리스트를 적용
 
-# [Do it! 실습 8-3] 커서로 선형 리스트 만들기
+# [Do it! 실습 8-3] 커서로 선형 리스트 만들기 array_list.py 저장 -----
 # from __future__ import annotations
 from typing import Any, Type
 
@@ -3250,7 +3272,70 @@ class ArrayLinkedListIterator:
             data = self.n[self.current].data
             self.current = self.n[self.current].next
             return data
+# array_list.py 저장 -----
 
+
+# 커서를 이용한 선형 리스트 클래스 ArrayLinkedList 사용
+from enum import Enum
+from array_list import ArrayLinkedList
+
+Menu = Enum('Menu', ['머리에노드삽입', '꼬리에노드삽입', '머리노드삭제',
+                     '꼬리노드삭제', '주목노드출력', '주목노드이동',
+                     '주목노드삭제', '모든노드삭제', '검색', '멤버십판단',
+                     '모든노드출력', '스캔', '종료'])
+
+
+def select_Menu() -> Menu:
+    """메뉴 선택"""
+    s = [f'({m.value}){m.name}' for m in Menu]
+    while True:
+        print(*s, sep='  ', end='')
+        n = int(input(' : '))
+        if 1 <= n <= len(Menu):
+            return Menu(n)
+
+
+lst = ArrayLinkedList(100)  # 선형 리스트를 생성
+
+while True:
+    menu = select_Menu()  # 메뉴 선택
+    if menu == Menu.머리에노드삽입:               # 맨 앞에 노드 삽입
+        lst.add_first(int(input('머리 노드에 넣을 값을 입력하세요.: ')))
+    elif menu == Menu.꼬리에노드삽입:             # 맨 끝에 노드 삽입
+        lst.add_last(int(input('꼬리 노드에 넣을 값을 입력하세요.: ')))
+    elif menu == Menu.머리노드삭제:             # 맨 앞 노드를 삭제
+        lst.remove_first()
+    elif menu == Menu.꼬리노드삭제:             # 맨 끝 노드를 삭제
+        lst.remove_last()
+    elif menu == Menu.주목노드출력:             # 주목 노드를 출력
+        lst.print_current_node()
+    elif menu == Menu.주목노드이동:             # 주목 노드를 한 칸 뒤로 이동
+        lst.next()
+    elif menu == Menu.주목노드삭제:             # 주목 노드를 삭제
+        lst.remove_current_node()
+    elif menu == Menu.모든노드삭제:             # 모두 삭제
+        lst.clear()
+    elif menu == Menu.검색:                     # 검색
+        pos = lst.search(int(input('검색할 값을 입력하세요.: ')))
+        if pos >= 0:
+            print(f'이 키를 갖는 데이터는 {pos + 1}번째에 있습니다.')
+        else:
+            print('해당 데이터가 없습니다.')
+    elif menu == Menu.멤버십판단:               # 멤버십을 판단
+        print('그 값의 데이터는 포함되어'
+              + ('있습니다.' if int(input('판단할 값을 입력하세요.')) in lst else ' 있지 않습니다.'))
+    elif menu == Menu.모든노드출력:             # 모든 노드를 출력
+        lst.print()
+    elif menu == Menu.스캔:                     # 모든 노드 스캔
+        for e in lst:
+            print(e)
+    else:                                       # 종료
+        break
+
+
+# # 원형 이중 연결 리스트(circular doubly linked List)
+# 원형 리스트의 꼬리 노드는 머리노드를 참조하는 포인터를 갖는다
+# 이중 연결 리스트는 앞쪽 노드에 대한 참조 포인터를 갖는다
 
 # -----------------------------------------
 # 9장. 이진 트리 검색
