@@ -3323,7 +3323,7 @@ while True:
             print('해당 데이터가 없습니다.')
     elif menu == Menu.멤버십판단:               # 멤버십을 판단
         print('그 값의 데이터는 포함되어'
-              + ('있습니다.' if int(input('판단할 값을 입력하세요.')) in lst else ' 있지 않습니다.'))
+        + ('있습니다.' if int(input('판단할 값을 입력하세요.')) in lst else ' 있지 않습니다.'))
     elif menu == Menu.모든노드출력:             # 모든 노드를 출력
         lst.print()
     elif menu == Menu.스캔:                     # 모든 노드 스캔
