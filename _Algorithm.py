@@ -1,401 +1,148 @@
 """
-알고리즘 입문
+_Algorithm.py
 """
 
-
-# -----------------------------------------
+# =========================
 # 1장. 알고리즘 기초
-# -----------------------------------------
+# =========================
 
+# # 순차 구조 ----------
 
-# 1. 알고리즘 이란----------------
-
-
-# 세 정수의 최대값
-print("세 정수의 최대값을 구합니다")
-a = int(input(print("첫번째 정수값을 입력하세요: ", end="")))
-b = int(input(print("두번째 정수값을 입력하세요: ", end="")))
-c = int(input(print("세번째 정수값을 입력하세요: ", end="")))
-
-# 순차구조: 한문장씩 순서대로 실행
-maximum = a  # 대입문
+maximum = a
 if b > maximum:
-    maximum = b  # 선택구조: 조건식(조건)에 따른 실행흐름 변경
+    maximum = b
 if c > maximum:
     maximum = c
-
 print(f"최대값은 {maximum} 입니다")
 
-# <보충> input()
-# 1.input('문자열')에 전달된 문자열을 우선 출력
-# 2.엔터가 입력때까지 키보드의 문자열을 입력 받음
-# 3.엔터를 제외한 문자열을 반환
+# # 반복 구조 ----------
 
-# <보충> ;
-# 스위트가 단순문이면 헤드와 같은 행에 둘 수 있고
-# 단순문이 여럿이면 ;으로 구분하여 같은 행에 둘 수 있다
-# if a<b: min=a; max=b;
-
-
-# 세 정수의 중앙값
-def med3(a, b, c):
-    if a >= b:
-        if b >= c:
-            return b
-        elif a <= c:
-            return a
-        else:
-            return c
-    elif a > c:
-        return a
-    elif b > c:
-        return c
-    else:
-        return b
-
-
-print("세 정수의 최대값을 구합니다")
-a = int(input(print("첫번째 정수값을 입력하세요: ", end="")))
-b = int(input(print("두번째 정수값을 입력하세요: ", end="")))
-c = int(input(print("세번째 정수값을 입력하세요: ", end="")))
-
-print(f"중앙값은 {med3(a,b,c)} 입니다")
-
-# <보충> 삼항연산자
-# a if b else c # 피연산자수 3개, 파이썬에서 유일한 삼항연산자
-
-
-# 반복하는 알고리즘----------------
-# 변수가 하나일때는 for문 권장
-
-# 1부터 n까지 정수의 합: while문
-n = int(input("n 값을 넣으세요: "))
-
-sum = 0  # 합 저장 변수
-i = 1  # 카운터용 변수(반복제어)
-
-while i <= n:  # 반복구조, i가 n+1 이어야 while 탈출
+# # while 문
+sum = 0
+i = 1
+while i <= n:  # i가 n+1 이어야 while 탈출
     sum += i
     i += 1
-
 print(f"1부터 {n}까지의 합은 {sum}입니다")
 
-
-# 1부터 n까지 정수의 합: for문, 변수가 1개이면 추천
-n = int(input("n 값을 넣으세요: "))
-
-sum = 0  # 합 저장 변수
-for i in range(1, n + 1):  # 이터러블(반복)객체_str,list,tuple_생성
-    sum += i
-
-print(f"1부터 {n}까지의 합은 {sum}입니다")
-
-
-# 반복 과정에서 조건 판단1: 비추천
-print("a부터 b까지의 합을 구합니다")
-a = int(input("정수 a 값을 넣으세요: "))
-b = int(input("정수 b 값을 넣으세요: "))
-
-if a > b:
-    a, b = b, a  # a와 b 교환
-
+# # for 문: 변수가 1개이면 추천
 sum = 0
-for i in range(a, b + 1):  # 오름차순
+for i in range(1, n + 1):  # 이터러블 객체
+    sum += i
+print(f"1부터 {n}까지의 합은 {sum}입니다")
+
+# # [비추천] 반복문과 조건문 혼용, 불필요한 반복 작업 수행
+if a > b:
+    a, b = b, a
+sum = 0
+for i in range(a, b + 1):
     if i < b:
         print(f"{i} + ", end="")
     else:
-        print(f"{i} = ", end="")  # 1번만 실행
+        print(f"{i} = ", end="")  # 매번 불필요한 반복 실행
     sum += i
-
 print(sum)
 
-
-# 반복 과정에서 조건 판단1: 추천
-print("a부터 b까지의 합을 구합니다")
-a = int(input("정수 a 값을 넣으세요: "))
-b = int(input("정수 b 값을 넣으세요: "))
-
+# # [추천]
 if a > b:
-    a, b = b, a  # a와 b 교환
-
+    a, b = b, a
 sum = 0
-for i in range(a, b):  # 반복횟수 1번(b+1) 축소
-    # if i<b:              # 조건 판단 제거
+for i in range(a, b):      # 반복횟수 1번(b+1) 축소, 조건판단(if i<b) 제거!!
     print(f"{i} + ", end="")
     sum += i
-
-print(f"{b} = ", end="")  # 1번만 실행되는 반복문 독립
+print(f"{b} = ", end="")   # 1번만 실행되는 구문 독립!!
 sum += b
 print(sum)
 
-
-# 반복 과정에서 조건 판단2: 비추천
+# # [비추천] 반복문과 조건문 혼용, range 범위 1부터 시작 시 본문 수정 필요
 print("+와 -를 번갈아 출력합니다.")
 n = int(input("몇 개를 출력할까요?: "))
-
 for i in range(n):
-    if i % 2:  # 홀수
-        print("-", end="")
+    if i % 2:               # 홀수
+        print("-", end="")  # 1부터 시작하면 "+" 변경 필요
     else:
-        print("+", end="")
+        print("+", end="")  # 1부터 시작하면 "-" 변경 필요
+print()
 
-print()  # 줄바꿈
-
-# <보충> 몫과 나머지
-# 7/4의 몫은     1 = 7 // 4
-# 7/4의 나머지는 3 = 7 % 4
-
-
-# 개선포인트
-# 1: for문을 반복할 때마다 if문도 반복 수행되는 문제 개선
-# 2: 유연성 결핍(i를 1~n까지로 바꾸려면, range(범위)와 print(+-)문 내용을 바꿔야함) 개선
-# for i in range(1, n+1):
-#     if i % 2:
-#         print('+', end='')
-#     else:
-#         print('-', end='')
-
-
-# 반복 과정에서 조건 판단2: 추천
-print("+와 -를 번갈아 출력합니다.")
-n = int(input("몇 개를 출력할까요?: "))
-
-for _ in range(n // 2):  # 파이썬은 인덱스가 필요 없는 등 필요없는 값은 _로 표현
+# # [추천]
+for _ in range(n // 2):     # 필요없는 값은 _로 표현
     print("+-", end="")
-
 if n % 2:
     print("+", end="")
+print()
 
-print()  # 줄바꿈
-
-
-# 반복 과정에서 조건 판단3: 비추천
+# # [비추천]
 print("*를 출력합니다.")
 n = int(input("몇 개를 출력할까요?: "))
 w = int(input("몇 개마다 줄바꿈할까요?: "))
-
 for i in range(n):
     print("*", end="")
     if i % w == w - 1:
         print()  # 줄바꿈
-
 if n % w:
-    print()  # 줄바꿈
+    print()      # 줄바꿈
 
-
-# 반복 과정에서 조건 판단3: 추천
-print("*를 출력합니다.")
-n = int(input("몇 개를 출력할까요?: "))
-w = int(input("몇 개마다 줄바꿈할까요?: "))
-
+# # [추천]
 for _ in range(n // w):
     print("*" * w)
-
 rest = n % w
 if rest:
     print("*" * rest)
 
-
-# 무한 루프와 break
-while True:
-    n = int(input("n 값을 입력하세요"))
-    if n > 0:
-        break  # n 이 0 보다 커질 때까지 반복
-
-# <보충> n까지의 반복문 종료 시 카운터 i 값은?
-# while i <= n :            # i는 n+1
-# for i in range(n+1):      # i는 n
-
-
-# 직사각형 넓이로 변의 길이 구하기
-area = int(input("직사각형의 넓이를 입력하세요: "))
-
-for i in range(1, area + 1):  # 약수를 나열
-    if i * i > area:
-        break  # i*i 가 area를 초과하면 반복 종료
-    if area % i:
-        continue  # 나누어 떨어지지 않으면 다음 스위트 건너띄고 진행
-    print(f"{i} x {area//i}")
-
-
-# else문이 뒤따르는 for문
-# 10~99 사이의 난수 n개 생성(13이 나오면 중단)
-import random
-
-n = int(input("난수의 개수를 입력하세요: "))
-
-for _ in range(n):
-    r = random.randint(10, 99)
-    print(r, end=" ")
-    if r == 13:
-        print("\n프로그램을 중단합니다")
-        break
-else:  # 반복이 정상 종료된 다음 실행
-    print("\n난수 생성을 종료합니다")
-
-# <보충> else 문
-# 조건식에 의해 반복문이 정상 종료되는 경우 실행
-# break 문으로 종료되면 미실행
-
-
-# 반복문 건너뛰기
-# 건너뛰어야할 값을 모르거나 값이 변화할 때 사용(판단비용 과다)
+# # [비추천]
 for i in range(1, 13):
-    if i == 8:
-        continue
+    if i == 8:    # 한번을 위한 판단비용 과다(건너뛸 값을 모르거나 값이 변화할 때는 사용)
+        continue  # 반복문 건너뛰기
     print(i, end=" ")
 print()
 
-# 판단보다 리스트연산비용이 저렴
+# # [추천]
 for i in list(range(1, 8)) + list(range(9, 13)):
-    if i == 8:
-        continue
     print(i, end=" ")
 print()
 
-# <보충> 연속 비교연산자 사용
-while True:
-    no = int(input("2자리 양수를 입력하세요: "))
-    if no >= 10 and no <= 99:  # 종료조건(2자리수)
-        # if 10 <= no <= 99:
-        # if not(no < 10 or no > 99):  # 계속조건(2자리수가아님)의 부정
-        break
-print(f"입력받은 양수는 {no}입니다.")
-
-# 다중 루프
-print("-" * 27)
-for i in range(1, 10):
-    for j in range(1, 10):
-        print(f"{i*j:3}", end='')
-    print()
-print("-" * 27)
-
-# 다중 루프: 직각 이등변 삼각형
-print("왼쪽 아래가 직각이등변 삼각형을 출력합니다")
-for i in range(1, 10):
-    for j in range(1, i + 1):
-        print('*', end='')
-    print()
-
-# 다중 루프: 직각 이등변 삼각형2
+# # 다중 루프: 직각 이등변 삼각형
 print("오른쪽 아래가 직각이등변 삼각형을 출력합니다")
 for i in range(1, 10):
-    for j in range(1, 10 + 1 - i):   # hint. 공백과 *의 개수를 합하면 n
+    for j in range(1, 10 + 1 - i):   # 공백과 *의 개수를 합하면 n
         print(' ', end='')
     for j in range(1, i + 1):
         print('*', end='')
     print()
 
-# 변수는 객체를 참조하는 객체에 연결된 이름에 불과함
-# 모든 객체는 메모리를 가지며 자료형뿐만 아니라 식별번호(id)도 가짐
-n = 1  # 전역변수
 
-
-def put_id():
-    x = 1  # 지역변수
-    print(f'id(x) = {id(x)}')
-
-
-print(f'id(1) = {id(1)}')
-print(f'id(n) = {id(n)}')
-put_id()  # n, x 모두 int객체 1을 참조하는 이름에 불과
-
-
-# -----------------------------------------
+# =========================
 # 2장. 기본 자료구조와 배열
-# -----------------------------------------
+# =========================
 
-# 자료구조와 배열----------------
-# 배열: 묶음 단위로 값을 저장하는 배열은 흩어진 변수를 하나로 묶어서 사용할 수 있음
-# 원소: 배열에 저장된 객체 하나하나로 각 원소는 고유의 인덱스를 부여 받음
-# 파이썬의 배열: 뮤터블 객체인 list와 인뮤터블 객체인 tuple
+# # 자료구조와 배열 ----------
 
-# 실습2-1: 학생 수 변경, 특정 학생의 점수 확인|변경, 최고점|최저점|정렬 필요 등 대응 어려움
-print('학생 그룹 점수의 합계와 평균을 구합니다.')
+# # 리스트와 내장함수 list() 기초
+[]
+list()
+list('str')
+list([1, 2, 3, ])
+list(range(3, 8))
 
-score1 = int(input('1번 학생의 점수를 입력하세요.: '))
-score2 = int(input('2번 학생의 점수를 입력하세요.: '))
-score3 = int(input('3번 학생의 점수를 입력하세요.: '))
-score4 = int(input('4번 학생의 점수를 입력하세요.: '))
-score5 = int(input('5번 학생의 점수를 입력하세요.: '))
+# # 튜플과 내장함수 tuple() 기초
+()
+tuple()
+1,
+1, 2, 3,
+tuple('str')
+tuple([1, 2, 3, ])
+tuple({1, 2, 3, })
+tuple(range(3, 8))
 
-total = 0
-total += score1
-total += score2
-total += score3
-total += score4
-total += score5
+# # if 문과 빈배열
+if []:
+    print('The array with the elements is true')
+else:
+    print(bool([]))
 
-print(f'합계는 {total}점입니다.')
-print(f'평균은 {total / 5}점입니다.')
+# # 배열이란----------
 
-# 리스트와 내장함수 list() 기초
-list01 = []                  # 빈리스트
-list02 = [None] * 5          # 원소가 5개이면서 원소값이 없는 리스트
-list03 = [1, 2, 3, ]
-
-list04 = list()              # 빈리스트
-list05 = list('str')
-list06 = list([1, 2, 3, ])
-list07 = list((1, 2, 3, ))
-list08 = list({1, 2, 3, })
-list09 = list(range(3, 8))
-
-# 튜플과 내장함수 tuple() 기초
-tuple01 = ()                   # 빈튜플
-tuple02 = (1,)
-tuple03 = (1, 2, 3,)
-tuple04 = 1,                   # 쉼표가 있으면 튜플로 인식
-tuple05 = 1, 2, 3
-tuple06 = 1, 2, 3,
-
-tuple07 = tuple()              # 빈튜플
-tuple08 = tuple('str')
-tuple09 = tuple([1, 2, 3, ])
-tuple10 = tuple({1, 2, 3, })
-tuple11 = tuple(range(3, 8))
-
-# 언팩
-x = [1, 2, 3]
-a, b, c = x
-a, b, c
-
-# 인덱스로 원소에 접근
-x[0]
-x[-1]
-
-# 슬라이스식으로 원소에 접근
-s = [11, 22, 33, 44, 55, 66, 77]
-s[0:6:2]
-s[3:1]  # !! i, j가 len(s)보다 크면 len(s)로 간주, i가 없으면 0로 간주, j가 없으면 len(s)로 간주
-
-# 응용
-x = 6
-y = 2
-x, y = y + 2, x + 3  # !! 동시 수행으로 x는 6으로 진행
-print(x, y)
-
-x = 6
-y = 2
-x = y + 2
-y = x + 3  # 순차 수행으로 x는 4로 진행
-print(x, y)
-
-# 배열의 등가관계
-# == : 두 객체의 값이 같은지 비교
-# is : 두 객체의 값과 식별 번호가 같은지 비교
-[1, 2, 3] == [1, 2, 3]    # 원소를 순차적으로 비교
-[1, 2, 3] < [1, 2, 3, 1]  # 같은 경우는 배열 갯수가 많으면 그 배열이 크다
-[1, 2, 3] < [1, 4]        # 대응 원소값 하나가 크면 그 배열이 크다
-[1, 2, 3] < [1, 2, 3, 1] < [1, 4]
-
-# 배열이란----------------
-
-# 시퀀스형 자료를 받아서 애니형 자료를 반환
-# 시퀀스자료형: 리스트, 튜플, 문자열, 바이트형 등 배열관련 자료형
-# 애니자료형: 제약이 없는 자료형
-
-# [Do it! 실습 2-2] 시퀀스 원소의 최댓값 출력하기(max.py)
+# # 시퀀스 원소의 최댓값 출력하기(max.py)
 from typing import Any, Sequence
 
 
@@ -407,39 +154,33 @@ def max_of(a: Sequence) -> Any:
     return maximum
 
 
-# 파이썬에서는 하나의 스크립트프로그램을 모듈이라 칭하며 확장자를 제외한 파일명이 모듈명이다
-# 모듈이 직접 수행될 때 '변수__name__' 은 '__main__'이다
-# 모듈이 임포트될 때 '변수__name__' 은 원래의 '모듈명'이다
+# 모듈(파일)이 직접 실행될 때 수행되는 구문
 if __name__ == '__main__':
     print('배열의 최댓값을 구합니다.')
     num = int(input('원소 수를 입력하세요 : '))
-    x = [None] * num    # 원소 수가 num인 리스트를 생성
-
+    x = [None] * num
     for i in range(num):
         x[i] = int(input(f'x[{i}]를 입력하세요.: '))
-
     print(f'최댓값은 {max_of(x)}입니다.')
 
-# [Do it! 실습 2-3] 배열 원소의 최댓값을 구해서 출력하기(원솟값을 입력받음)
-from max import max_of  # max.py 파일의 max_of 함수 호출
+# # 배열 원소의 최댓값을 구해서 출력하기(사용자 입력 받기)
+# max.py 파일의 max_of 함수 호출
+from max import max_of
 
 print('배열의 최댓값을 구합니다.')
 print('주의: "End"를 입력하면 종료합니다.')
-
 number = 0
-x = []                  # 빈 리스트
-
+x = []
 while True:
     s = input(f'x[{number}]를 입력하세요.: ')
     if s == 'End':
         break
-    x.append(int(s))    # 배열의 끝에 추가
+    x.append(int(s))
     number += 1
-
 print(f'{number}개를 입력했습니다.')
 print(f'최댓값은 {max_of(x)}입니다.')
 
-# 배열 원소를 하나씩 살펴보기(스캔) 위한 방법 4가지
+# # 배열 원소를 하나씩 살펴보기(스캔) 위한 방법 4가지
 x = ['Jone', 'George', 'Paul', 'Ringo']
 
 # len()함수로 원소 수를 알아내어 반복
@@ -458,7 +199,7 @@ for i, name in enumerate(x, 1):
 for i in x:
     print(i)
 
-# 배열 원소를 역순으로 정렬
+# # 배열 원소를 역순으로 정렬
 from typing import Any, MutableSequence
 
 
@@ -471,65 +212,37 @@ def reverse_array(a: MutableSequence) -> None:
 if __name__ == '__main__':
     print('배열 원소를 역순으로 정렬합니다.')
     nx = int(input('원소 수를 입력하세요.: '))
-    x = [None] * nx   # 원소 수가 nx인 리스트를 생성
-
+    x = [None] * nx
     for i in range(nx):
         x[i] = int(input(f'x[{i}] : '))
-
-    reverse_array(x)  # x를 역순으로 정렬
-
+    reverse_array(x)
     print('배열 원소를 역순으로 정렬했습니다.')
     for i in range(nx):
         print(f'x[{i}] = {x[i]}')
 
-# 리스트를 역순으로 정렬
-x.reverse()            # 리스트가 자기자신을 역순으로 정렬하는 리스트형 함수 reverse()
-y = list(reversed(x))  # x의 원소를 역순으로 꺼내서 새로운 리스트에 담는다
-
-# 기수(n진수) 변환하기
+# # 기수(n진수) 변환하기
 # 10진수 정수를 n진수로 변환하려면 정수를 n으로 나눈 나머지를 구하는 동시에
-# 몫이 0이 될때까지 나누기를 반복한 후 나머지를 역순으로 늘어 놓는다
+# 몫이 0이 될때까지 나누기를 반복한 후 나머지를 역순으로 놓는다
 
 
-# Do it! 실습 2-7 [A] 10진수 정수값을 입력받아 2~36진수로 변환하여 출력하기
+# 10진수 정수값을 입력 받아 2~36진수로 변환하여 출력하기
 def card_conv(x: int, r: int) -> str:
     """정수 x를 r 진수로 변환한 뒤 그 수를 나타내는 문자열을 반환"""
     d = ''  # 변환 뒤 문자열
     dchar = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     while x > 0:
-        d += dchar[x % r]  # 해당하는 문자를 꺼내 결합
+        d += dchar[x % r]
         x //= r
-    return d[::-1]         # 역순으로 반환
+    return d[::-1]
 
 
-if __name__ == '__main__':
-    print('10진수를 n진수로 변환합니다.')
-
-    while True:
-        while True:  # 음이 아닌 정수를 입력받음
-            no = int(input('변환할 값으로 음이 아닌 정수를 입력하세요.: '))
-            if no > 0:
-                break
-
-        while True:  # 2~36진수의 정수값을 입력받음
-            cd = int(input('어떤 진수로 변환할까요?: '))
-            if 2 <= cd <= 36:
-                break
-
-        print(f'{cd}진수로는 {card_conv(no, cd)}입니다.')
-
-        retry = input("한 번 더 변환할까요?(Y ... 예/N ... 아니오): ")
-        if retry in {'N', 'n'}:
-            break
-
-
-# Do it! 실습 2-7 [A] 수정: 식으로 출력하기
+"""
+# 변환과정을 출력하여 보기
 def card_conv(x: int, r: int) -> str:
     """정수 x를 r 진수로 변환한 뒤 그 수를 나타내는 문자열을 반환"""
-    d = ''  # 변환 뒤 문자열
+    d = ''
     dchar = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     n = len(str(x))
-
     print(f'{r:2} | {x:>{n}d}')
     while x > 0:
         print('   +' + (n + 2) * '-')
@@ -537,70 +250,30 @@ def card_conv(x: int, r: int) -> str:
             print(f'{r:2} | {x // r:>{n}d} ... {x % r}')
         else:
             print(f'     {x // r:>{n}d} ... {x % r}')
-        d += dchar[x % r]  # 해당하는 문자를 꺼내 결합
+        d += dchar[x % r]
         x //= r
-    return d[::-1]         # 역순으로 반환
-
+    return d[::-1]
+"""
 
 if __name__ == '__main__':
     print('10진수를 n진수로 변환합니다.')
-
     while True:
-        while True:  # 음이 아닌 정수를 입력받음
+        while True:
             no = int(input('변환할 값으로 음이 아닌 정수를 입력하세요.: '))
             if no > 0:
                 break
-
-        while True:  # 2~36진수의 정수값을 입력받음
+        while True:
             cd = int(input('어떤 진수로 변환할까요?: '))
             if 2 <= cd <= 36:
                 break
-
         print(f'{cd}진수로는 {card_conv(no, cd)}입니다.')
-
         retry = input("한 번 더 변환할까요?(Y ... 예/N ... 아니오): ")
         if retry in {'N', 'n'}:
             break
 
-# !! 함수로 전달되는 매개변수 자료형에 따라서 달라지는 영향----------
-# 함수에서 이뮤터블형의 매개변수를 변경하면 원래 매개변수값에는 영향없다
-# 함수에서 뮤터블형의 매개변수를 변경하면 원래 매개변수값도 바뀐다
 
-
-# 이뮤터블형 매개변수
-def sum_1ton(n):
-    """1부터 n까지 정수의 합"""
-    s = 0
-    while n > 0:
-        s += n
-        n -= 1
-    return s
-
-
-x = int(input('x의 값을 입력하세요.: '))
-print(f'1부터 {x}까지 합은 {sum_1ton(x)}입니다.')
-
-print(x)
-
-
-# 뮤터블형 매개변수
-def change(lst, idx, val):
-    """lst[idx]의 값을 val로 업데이트"""
-    lst[idx] = val
-
-
-x = [11, 22, 33, 44, 55]
-print('x =', x)
-
-index = int(input('업데이트할 인덱스를 선택하세요.: '))
-value = int(input('새로운 값을 입력하세요.: '))
-
-change(x, index, value)
-print(f'x = {x}')
-
-print(x)
-
-# 소수 구하기---------------------
+>>>>>>>>>>>>>>>>>
+# 소수 구하기---------------
 
 # 소수는 1과 자기자신(n) 이외에는 나누어 떨어지지 않음
 counter = 0
@@ -689,9 +362,9 @@ x[0][1] = 9
 print(x, y, z, m, n, sep='\n')
 
 
-# -----------------------------------------
+# =========================
 # 3장. 검색 알고리즘
-# -----------------------------------------
+# =========================
 
 # # 선형검색: 정렬되지 않은 데이터셋(의 유일한 방법)을 맨 앞부터 검색 수행
 # # 이진검색: 정렬된 데이터셋을 빠르게 검색 수행
@@ -1183,9 +856,9 @@ while True:
         break
 
 
-# -----------------------------------------
+# =========================
 # 4장. 스택과 큐(선형 검색)
-# -----------------------------------------
+# =========================
 
 # 데이터를 임시 저장하는 기본 자료구조
 # 스택은 후입선출, 큐는 선입선출 방식
@@ -1644,9 +1317,9 @@ while i < cnt:
 # 파이썬에서는 collections.deque컨테이너로 제공됨
 
 
-# -----------------------------------------
+# =========================
 # 5장. 재귀 알고리즘
-# -----------------------------------------
+# =========================
 
 # # 재귀 알로리즘의 기본: 자기 자신을 사용하여 정의 ----------
 
@@ -1851,9 +1524,9 @@ def set(i: int) -> None:
 set(0)          # 0 열에 퀸을 놓기
 
 
-# -----------------------------------------
+# =========================
 # 6장. 정렬 알고리즘
-# -----------------------------------------
+# =========================
 
 # 정렬 알고리즘의 핵심은 교환, 선택, 삽입입니다
 # 버블정렬, 단순선택정렬, 단순삽입정렬, 셀정렬, 퀵정렬, 병합정렬, 힙정렬, 도수정렬을 다룸
@@ -2694,9 +2367,9 @@ if __name__ == '__main__':
     for i in range(num):
         print(f'x[{i}] = {x[i]}')
 
-# -----------------------------------------
+# =========================
 # 7장. 문자열 검색
-# -----------------------------------------
+# =========================
 
 # # 1. 브루트포스법(단순법)
 # 검색받는 쪽의 문자열을 '텍스트', 검색조건 문자열을 '패턴'이라고 칭함
@@ -2837,9 +2510,9 @@ if __name__ == '__main__':
     else:
         print(f'{(idx + 1)}번째 문자에서 일치합니다.')
 
-# -----------------------------------------
+# =========================
 # 8장. 연결 리스트(Linked list) 검색
-# -----------------------------------------
+# =========================
 
 # 연결 리스트의 원소를 노드라고 칭하는데, 노드는 데이터와 뒤쪽 노드를 가리키는 참조 포인터를 갖고 있다
 # 연결 리스트의 리스트는 파이썬에서 제공하는 리스트 자료형(배열)과는 다르다
@@ -3592,12 +3265,218 @@ while True:
         break
 
 
-# -----------------------------------------
+# =========================
 # 9장. 이진 트리 검색
-# -----------------------------------------
+# =========================
 
 # 리스트는 순서를 매긴 데이터를 나열하는 자료구조
 # 트리구조는 데이터 사이의 계층관계를 표현하는 자료구조
 
+# # 이진 검색 트리(binary search tree)의 구현 bst.py 저장-----
+# 왼쪽 서브트리노드의 키값은 자신의 노드키값보다 작아야한다
+# 오른쪽 서브트리노드의 키값은 자신의 노드키값보다 커야한다
 
-# END.
+# from __future__ import annotations
+from typing import Any, Type
+
+
+class Node:
+    """이진 검색 트리의 노드"""
+    def __init__(self, key: Any, value: Any, left: Node = None,
+                 right: Node = None):
+        """생성자"""
+        self.key = key      # 키
+        self.value = value  # 값
+        self.left = left    # 왼쪽 포인터(왼쪽 자식 참조), 기본값 None 지정
+        self.right = right  # 오른쪽 포인터(오른쪽 자식 참조), 기본값 None 지정
+
+
+class BinarySearchTree:
+    """이진 검색 트리"""
+    def __init__(self):
+        """초기화"""
+        self.root = None  # 루트
+
+    def search(self, key: Any) -> Any:
+        """키 key를 갖는 노드를 검색"""
+        p = self.root           # 루트에 주목
+        while True:
+            if p is None:       # 더 이상 진행할 수 없으면(주목노드가 None이면)
+                return None     # 검색 실패
+            if key == p.key:    # key와 노드 p의 키가 같으면
+                return p.value  # 검색 성공
+            elif key < p.key:   # key 쪽이 작으면
+                p = p.left      # 왼쪽 서브 트리에서 검색
+            else:               # key 쪽이 크면
+                p = p.right     # 오른쪽 서브 트리에서 검색
+
+    def add(self, key: Any, value: Any) -> bool:
+        """키가 key이고, 값이 value인 노드를 삽입(이진트리상태유지를주의)"""
+
+        def add_node(node: Node, key: Any, value: Any) -> None:
+            """node를 루트로 하는 서브 트리에 키가 key이고, 값이 value인 노드를 삽입"""
+            if key == node.key:
+                return False  # key와 같은 키를 갖는 노드가 존재하면 삽입하지 않음(False 반환)
+            elif key < node.key:
+                if node.left is None:
+                    node.left = Node(key, value, None, None)
+                else:
+                    add_node(node.left, key, value)
+            else:
+                if node.right is None:
+                    node.right = Node(key, value, None, None)
+                else:
+                    add_node(node.right, key, value)
+            return True
+
+        if self.root is None:  # 트리가 빈 상태
+            self.root = Node(key, value, None, None)
+            return True
+        else:
+            return add_node(self.root, key, value)
+
+    def remove(self, key: Any) -> bool:
+        """키가 key인 노드를 삭제"""
+        p = self.root           # 스캔 중인 노드
+        parent = None           # 스캔 중인 노드의 부모 노드
+        is_left_child = True    # p는 parent의 왼쪽 자식 노드인지 확인
+
+        while True:
+            if p is None:       # 더 이상 진행할 수 없으면
+                return False    # 그 키는 존재하지 않음
+
+            if key == p.key:    # key와 노드 p의 키가 같으면
+                break           # 검색 성공
+            else:
+                parent = p                  # 가지를 내려가기 전에 부모를 설정
+                if key < p.key:             # key 쪽이 작으면
+                    is_left_child = True    # 여기서 내려가는 것은 왼쪽 자식
+                    p = p.left              # 왼쪽 서브 트리에서 검색
+                else:                       # key 쪽이 크면
+                    is_left_child = False   # 여기서 내려가는 것은 오른쪽 자식
+                    p = p.right             # 오른쪽 서브 트리에서 검색
+
+        if p.left is None:                  # p에 왼쪽 자식이 없으면
+            """자식노드가 없거나 1개인 경우"""
+            if p is self.root:
+                self.root = p.right
+            elif is_left_child:
+                parent.left = p.right       # 부모의 왼쪽 포인터가 오른쪽 자식을 가리킴
+            else:
+                parent.right = p.right      # 부모의 오른쪽 포인터가 오른쪽 자식을 가리킴
+        elif p.right is None:               # p에 오른쪽 자식이 없으면
+            if p is self.root:
+                self.root = p.left
+            elif is_left_child:
+                parent.left = p.left        # 부모의 왼쪽 포인터가 왼쪽 자식을 가리킴
+            else:
+                parent.right = p.left       # 부모의 오른쪽 포인터가 왼쪽 자식을 가리킴
+        else:
+            """자식노드가 2개인 경우"""
+            parent = p
+            left = p.left                   # 서브 트리 안에서 가장 큰 노드
+            is_left_child = True
+            while left.right is not None:   # 가장 큰 노드 left를 검색
+                parent = left
+                left = left.right
+                is_left_child = False
+
+            p.key = left.key                # left의 키를 p로 이동
+            p.value = left.value            # left의 데이터를 p로 이동
+            if is_left_child:
+                parent.left = left.left     # left를 삭제
+            else:
+                parent.right = left.left    # left를 삭제
+        return True
+
+    def dump(self, reverse=False) -> None:
+        """덤프(모든 노드를 키의 오름차순/내림차순으로 출력)"""
+
+        def print_subtree(node: Node):
+            """node를 루트로 하는 서브 트리의 노드를 키의 오름차순으로 출력"""
+            if node is not None:
+                print_subtree(node.left)                # 왼쪽 서브 트리를 오름차순으로 출력
+                print(f'{node.key}  {node.value}')      # node를 출력
+                print_subtree(node.right)               # 오른쪽 서브 트리를 오름차순으로 출력
+
+        def print_subtree_rev(node: Node):
+            """node를 루트로 하는 서브 트리의 노드를 키의 내림차순으로 출력"""
+            if node is not None:
+                print_subtree_rev(node.right)           # 오른쪽 서브 트리를 내림차순으로 출력
+                print(f'{node.key}  {node.value}')      # node를 출력
+                print_subtree_rev(node.left)            # 왼쪽 서브 트리를 내림차순으로 출력
+
+        print_subtree_rev(self.root) if reverse else print_subtree(self.root)
+
+    def min_key(self) -> Any:
+        """가장 작은 키"""
+        if self.root is None:
+            return None
+        p = self.root
+        while p.left is not None:
+            p = p.left
+        return p.key
+
+    def max_key(self) -> Any:
+        """가장 큰 키"""
+        if self.root is None:
+            return None
+        p = self.root
+        while p.right is not None:
+            p = p.right
+        return p.key
+# bst.py 저장-----
+
+
+# [Do it! 실습 9C-1] 이진 검색 트리 클래스 BinarySearchTree 사용하기(오름차순, 내림차순으로 덤프)
+from enum import Enum
+from bst import BinarySearchTree
+
+Menu = Enum('Menu', ['삽입', '삭제', '검색', '오름차순덤프', '내림차순덤프', '키의범위', '종료'])
+
+
+def select_Menu() -> Menu:
+    """메뉴 선택"""
+    s = [f'({m.value}){m.name}' for m in Menu]
+    while True:
+        print(*s, sep='  ', end='')
+        n = int(input(' : '))
+        if 1 <= n <= len(Menu):
+            return Menu(n)
+
+
+tree = BinarySearchTree()  # 이진 검색 트리를 생성
+
+while True:
+    menu = select_Menu()  # 메뉴 선택
+
+    if menu == Menu.삽입:  # 삽입
+        key = int(input('삽입할 키를 입력하세요.: '))
+        val = input('삽입할 값을 입력하세요.: ')
+        if not tree.add(key, val):
+            print('삽입에 실패했습니다!')
+
+    elif menu == Menu.삭제:  # 삭제
+        key = int(input('삭제할 키를 입력하세요.: '))
+        tree.remove(key)
+
+    elif menu == Menu.검색:  # 검색
+        key = int(input('검색할 키를 입력하세요.: '))
+        t = tree.search(key)
+        if t is not None:
+            print(f'이 키를 갖는 값은 {t}입니다.')
+        else:
+            print('해당 데이터가 없습니다.')
+
+    elif menu == Menu.오름차순덤프:  # 오름차순 덤프
+        tree.dump()
+
+    elif menu == Menu.내림차순덤프:  # 내림차순 덤프
+        tree.dump(reverse=True)
+
+    elif menu == Menu.키의범위:  # 키의 범위(최솟값과 최댓값)
+        print(f'키의 최솟값은 {tree.min_key()}입니다.')
+        print(f'키의 최댓값은 {tree.max_key()}입니다.')
+
+    else:  # 종료
+        break

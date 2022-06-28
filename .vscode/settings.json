@@ -2,6 +2,6 @@
     "python.formatting.provider": "black",
     "python.linting.pycodestyleEnabled": true,
     "python.linting.pycodestyleArgs":
-        ["--ignore=E402, E701, W503", "--max-line-length=120"],
+        ["--ignore=E402, E701, E712, W503", "--max-line-length=120"],
     "editor.rulers": [120]
 }
